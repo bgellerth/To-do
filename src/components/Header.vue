@@ -1,18 +1,18 @@
 <template>
   <div class="container">
     <h1 class="title">To do list</h1>
-    <button @click="addTodo" class="Add"><img :src="Addplus" /></button>
+    <button @click="addTodo" class="add"><img :src="Addplus" /></button>
   </div>
 </template>
 
 <script setup lang="ts">
 import Addplus from "../assets/addplus.png";
 const emit = defineEmits<{
-  (e: "todoAdded", value: string): void;
+  (e: "todoAdded"): void;
 }>();
 
 function addTodo() {
-  emit("todoAdded", "Add-one-todo");
+  emit("todoAdded");
 }
 </script>
 
@@ -27,9 +27,9 @@ function addTodo() {
 }
 .title {
   width: 275px;
-  height: 86px;
+  height: 85px;
   left: 415px;
-  top: 78.1px;
+  top: 78px;
 
   font-family: "Neue Haas Grotesk Display Pro";
   font-style: normal;
@@ -40,11 +40,11 @@ function addTodo() {
   color: #000000;
 }
 
-.Add {
-  width: 59.64px;
-  height: 59.64px;
-  left: 965.36px;
-  top: 91.28px;
+.add {
+  width: 60px;
+  height: 60x;
+  left: 965px;
+  top: 91px;
   border-radius: 45px;
   border: none;
   background: #38cb89;

@@ -22,11 +22,10 @@ const todos = ref<string[]>([]);
 const newTodo = ref("");
 
 function addTodo() {
-  if (newTodo.value) {
-    todos.value.push(newTodo.value);
-    newTodo.value = "";
-  }
+  todos.value.push(newTodo.value);
+  newTodo.value = "";
 }
+
 defineProps({
   index: {
     type: Number,
