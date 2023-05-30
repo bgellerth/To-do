@@ -1,6 +1,6 @@
 <template>
   <div class="ToDoList">
-    <AddToDo @todoAdded="addTodo" />
+    <Header @todoAdded="addTodo" />
     <ClearAll @clearAll="clearAll" />
     <ul>
       <li v-for="(toDo, index) in todos" :key="index">
@@ -13,26 +13,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps } from "vue";
-import AddToDo from "../components/AddToDo.vue";
+import { ref } from "vue";
+import Header from "./Header.vue";
 import ClearAll from "../components/ClearAll.vue";
 import RemoveToDo from "../components/RemoveToDo.vue";
 
-const todos = ref<string[]>([]);
-const newTodo = ref("");
-
-function addTodo() {
-  if (newTodo.value) {
-    todos.value.push(newTodo.value);
-    newTodo.value = "";
-  }
-}
 defineProps({
   index: {
     type: Number,
     required: true,
   },
 });
+const todos = ref<string[]>([]);
+const newTodo = ref("");
+
+function addTodo() {
+  todos.value.push(newTodo.value);
+  newTodo.value = "";
+}
+
 
 function removeTodo(index: number) {
   todos.value.splice(index, 1);
