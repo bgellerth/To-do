@@ -42,10 +42,10 @@ function addTodo() {
 
 .add {
   width: 60px;
-  height: 60x;
+  height: 60px;
   left: 965px;
   top: 91px;
-  border-radius: 45px;
+  border-radius: 30px;
   border: none;
   background: #38cb89;
 }

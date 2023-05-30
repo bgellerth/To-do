@@ -18,6 +18,12 @@ import Header from "./Header.vue";
 import ClearAll from "../components/ClearAll.vue";
 import RemoveToDo from "../components/RemoveToDo.vue";
 
+defineProps({
+  index: {
+    type: Number,
+    required: true,
+  },
+});
 const todos = ref<string[]>([]);
 const newTodo = ref("");
 
@@ -26,12 +32,6 @@ function addTodo() {
   newTodo.value = "";
 }
 
-defineProps({
-  index: {
-    type: Number,
-    required: true,
-  },
-});
 
 function removeTodo(index: number) {
   todos.value.splice(index, 1);
