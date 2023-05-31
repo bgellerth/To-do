@@ -49,4 +49,32 @@ function addTodo() {
   border: none;
   background: #38cb89;
 }
+
+@media (max-width: 758px) {
+  .title {
+    width: 92px;
+    height: 26px;
+    left: 16px;
+    top: 136px;
+
+    font-family: "Neue Haas Grotesk Display Pro";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+
+    color: #000000;
+  }
+  .add {
+    width: 32px;
+    height: 32px;
+    left: 271.38px;
+    top: 133px;
+
+    background: #38cb89;
+  }
+  .container {
+    width: 300px;
+  }
+}
 </style>

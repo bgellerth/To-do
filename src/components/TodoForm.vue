@@ -9,11 +9,11 @@
       placeholder="Add a new ToDo"
     />
     <ul>
-      <li class="listed-itmes" v-for="(toDo, index) in todos" :key="index">
+      <li class="listed-items" v-for="(toDo, index) in todos" :key="index">
         {{ toDo }}
         <RemoveToDo @todoRemoved="removeTodo(index)" />
       </li>
-      <img v-if="!todos.length" :src="Workflow" />
+      <img class="workflow-img" v-if="!todos.length" :src="Workflow" />
     </ul>
   </div>
 </template>
@@ -60,5 +60,20 @@ function clearAll() {
   background: #ffffff;
   border: 2px solid #000000;
   border-radius: 16px;
+}
+.workflow-img {
+  width: 410px;
+  height: 401.94px;
+  left: 515px;
+  top: 379.96px;
+}
+
+@media (max-width: 768px) {
+  .workflow-img {
+    width: 288.17px;
+    height: 282.5px;
+    left: 15.61px;
+    top: 211.08px;
+  }
 }
 </style>
