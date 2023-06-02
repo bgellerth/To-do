@@ -4,15 +4,25 @@
     <ClearAll @clearAll="clearAll" />
     <input
       v-if="todos.length"
+      maxlength="50"
       type="text"
       v-model="newTodo"
       placeholder="Add a new ToDo"
     />
-    <ul>
-      <li class="listed-items" v-for="(toDo, index) in todos" :key="index">
-        {{ toDo }}
-        <RemoveToDo @todoRemoved="removeTodo(index)" />
-      </li>
+    <ul class="list">
+      <div class="listed-items" v-for="(toDo, index) in todos" :key="index">
+        <div class="delete-btn">
+          <p class="title">Pay for rent</p>
+          <p class="todo-text">
+            {{ toDo }}
+          </p>
+          <!-- <RemoveToDo @todoRemoved="removeTodo(index)" /> -->
+        </div>
+        <div class="prio-check">
+          <PrioSelector />
+          <CheckTodo class="status" />
+        </div>
+      </div>
       <img class="workflow-img" v-if="!todos.length" :src="Workflow" />
     </ul>
   </div>
@@ -23,7 +33,9 @@ import { ref } from "vue";
 import Workflow from "../assets/workflow.png";
 import Header from "./Header.vue";
 import ClearAll from "../components/ClearAll.vue";
-import RemoveToDo from "../components/RemoveToDo.vue";
+// import RemoveToDo from "../components/RemoveToDo.vue";
+import PrioSelector from "../components/PrioSelector.vue";
+import CheckTodo from "./checkTodo.vue";
 
 defineProps({
   index: {
@@ -31,6 +43,7 @@ defineProps({
     required: true,
   },
 });
+
 const todos = ref<string[]>([]);
 const newTodo = ref("");
 
@@ -39,9 +52,9 @@ function addTodo() {
   newTodo.value = "";
 }
 
-function removeTodo(index: number) {
-  todos.value.splice(index, 1);
-}
+// function removeTodo(index: number) {
+//   todos.value.splice(index, 1);
+// }
 
 function clearAll() {
   todos.value = [];
@@ -49,31 +62,78 @@ function clearAll() {
 </script>
 
 <style scoped>
+.prio-check {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.delete-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
 .listed-items {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
   box-sizing: border-box;
   list-style: none;
-  position: center;
-  width: 600px;
-  height: 163px;
-  left: 420px;
-  top: 380px;
+
   background: #ffffff;
   border: 2px solid #000000;
   border-radius: 16px;
+  width: 600px;
+  height: 163px;
 }
 .workflow-img {
-  width: 410px;
-  height: 401.94px;
-  left: 515px;
-  top: 379.96px;
+  width: 100%;
+  height: auto;
 }
 
 @media (max-width: 768px) {
   .workflow-img {
-    width: 288.17px;
-    height: 282.5px;
-    left: 15.61px;
-    top: 211.08px;
+    width: 280px;
+    height: 280px;
+    left: 15px;
+    top: 210px;
+  }
+  .listed-items {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+
+    position: relative;
+
+    width: 280px;
+    height: 80px;
+    max-height: 160px;
+
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 16px;
+  }
+
+  .status {
+    position: absolute;
+    top: 0;
+    left: 1rem;
+  }
+
+  .todo-text {
+    margin-left: 2rem;
+  }
+
+  .title {
+    margin-left: 2rem;
   }
 }
 </style>
