@@ -2,13 +2,16 @@
   <div class="container">
     <div class="header">
       <h1 class="title">To do list</h1>
-      <button @click="addTodo" class="add"><img :src="Addplus" /></button>
+      <button @click="addTodo" class="add"><svg viewBox="-4 -4 32 32" stroke-width="1.5" stroke="white" >
+    <path d="M12 4.5v15m7.5-7.5h-15" />
+  </svg>
+  </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import Addplus from "../assets/addplus.png";
+
 const emit = defineEmits<{
   (e: "todoAdded"): void;
 }>();
@@ -25,7 +28,6 @@ function addTodo() {
   width: 600px;
   margin: 32px auto;
 }
-
 .header {
   display: flex;
   justify-content: space-between;

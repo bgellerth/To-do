@@ -1,7 +1,7 @@
 <template>
   <select
     class="todo-priority high"
-    v-on:change="handlePriorityChange"
+    @change="handlePriorityChange"
     ref="priority"
   >
     <option value="high">High</option>
@@ -10,13 +10,13 @@
   </select>
 </template>
 <script setup lang="ts">
-const handlePriorityChange = (event: Event) => {
+function handlePriorityChange(event: Event) {
   const target = event.target as HTMLSelectElement;
   const priority = target.value;
 
   target.classList.remove("high", "medium", "low");
   target.classList.add(priority);
-};
+}
 </script>
 
 <style scoped>

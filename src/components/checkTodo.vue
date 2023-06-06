@@ -1,14 +1,9 @@
 <template>
   <div class="status-container">
-    <img
-      class="unchecked"
-      v-if="!checked"
-      @click="toggleCheck"
-      src="../assets/unchecked.png"
-    />
+    <div class="unchecked" v-if="!checked" @click="toggleCheck"></div>
     <div class="checked-todo" v-else @click="toggleCheck">
-      <img class="circle" src="../assets/checked.png" />
-      <img class="vector" src="../assets/Vector.png" />
+      <div class="circle"></div>
+      <img class="vector" src="../assets/Vector.svg" />
     </div>
   </div>
 </template>
@@ -20,15 +15,15 @@ const checked = ref(false);
 
 function toggleCheck() {
   checked.value = !checked.value;
-  console.log(checked.value);
+
 }
 </script>
 <style>
 .checked-todo {
   position: relative;
 
-  width: 39.39px;
-  height: 40.04px;
+  width: 40px;
+  height: 40px;
 }
 .vector {
   position: absolute;
@@ -36,6 +31,17 @@ function toggleCheck() {
 }
 .circle {
   position: absolute;
+  border: 6px solid #4fda9b;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+.unchecked {
+  border: 6px solid black;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
 }
 
 @media (max-width: 768px) {
@@ -49,7 +55,6 @@ function toggleCheck() {
     width: 25px;
     height: 25px;
   }
-
   .vector,
   .circle {
     width: 25px;

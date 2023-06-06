@@ -4,19 +4,17 @@
 
 <script setup lang="ts">
 const emit = defineEmits<{
-  (e: "todoRemoved", type: any): void;
+  (e: "todoRemoved"): void;
 }>();
 
 function removeTodo() {
-  emit("todoRemoved", "");
+  emit("todoRemoved");
 }
 </script>
 <style scoped>
 .delete-button {
-  width: 119.64px;
-  height: 52.05px;
-  left: 570.36px;
-  top: 472.94px;
+  width: 120px;
+  height: 50px;
   border: none;
   background: #e6e6e6;
   border-radius: 16px;

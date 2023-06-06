@@ -1,12 +1,12 @@
 <template>
-  <div class="ToDoList">
+  <div class="todo-list">
     <Header @todoAdded="addTodo" />
     <ClearAll @clearAll="clearAll" />
     <input
       v-if="todos.length"
+      v-model="newTodo"
       maxlength="50"
       type="text"
-      v-model="newTodo"
       placeholder="Add a new ToDo"
     />
     <ul class="list">
@@ -16,7 +16,6 @@
           <p class="todo-text">
             {{ toDo }}
           </p>
-          <!-- <RemoveToDo @todoRemoved="removeTodo(index)" /> -->
         </div>
         <div class="prio-check">
           <PrioSelector />
@@ -24,25 +23,20 @@
         </div>
       </div>
       <img class="workflow-img" v-if="!todos.length" :src="Workflow" />
+      <p class="no-todos-text">You have no todos yet</p>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import Workflow from "../assets/workflow.png";
+import Workflow from "../assets/workflow.svg";
 import Header from "./Header.vue";
 import ClearAll from "../components/ClearAll.vue";
-// import RemoveToDo from "../components/RemoveToDo.vue";
 import PrioSelector from "../components/PrioSelector.vue";
 import CheckTodo from "./checkTodo.vue";
 
-defineProps({
-  index: {
-    type: Number,
-    required: true,
-  },
-});
+defineProps<{ index: number }>();
 
 const todos = ref<string[]>([]);
 const newTodo = ref("");
@@ -52,16 +46,24 @@ function addTodo() {
   newTodo.value = "";
 }
 
-// function removeTodo(index: number) {
-//   todos.value.splice(index, 1);
-// }
-
 function clearAll() {
   todos.value = [];
 }
 </script>
 
 <style scoped>
+.no-todos-text {
+  font-family: "Neue Haas Grotesk Display Pro";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 42px;
+  line-height: 50px;
+
+  color: #6d6d6d;
+}
+.todo-list {
+  margin-top: 170px;
+}
 .prio-check {
   display: flex;
   flex-direction: column;
@@ -76,6 +78,7 @@ function clearAll() {
 .list {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 50px;
 }
 
@@ -93,16 +96,18 @@ function clearAll() {
   height: 163px;
 }
 .workflow-img {
-  width: 100%;
-  height: auto;
+  width: 270px;
+  height: 315px;
 }
 
 @media (max-width: 768px) {
+  .no-todos-text {
+    font-size: 22px;
+    line-height: 26px;
+  }
   .workflow-img {
-    width: 280px;
-    height: 280px;
-    left: 15px;
-    top: 210px;
+    width: 190px;
+    height: 220px;
   }
   .listed-items {
     display: flex;
