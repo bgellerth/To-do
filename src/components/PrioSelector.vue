@@ -1,21 +1,38 @@
 <template>
   <select
-    class="todo-priority high"
-    @change="handlePriorityChange"
+    
+    class="todo-priority"
+    :class="[selectedPriority]"
+    :disabled="!toDo.isEditing"
+    v-model="selectedPriority"
+    @change="handlePriorityChange(toDo)"
     ref="priority"
+    @click.stop="handlePriorityClick(toDo)"
   >
     <option value="high">High</option>
     <option value="medium">Medium</option>
     <option value="low">Low</option>
   </select>
 </template>
-<script setup lang="ts">
-function handlePriorityChange(event: Event) {
-  const target = event.target as HTMLSelectElement;
-  const priority = target.value;
 
-  target.classList.remove("high", "medium", "low");
-  target.classList.add(priority);
+<script setup lang="ts">
+import { ref } from "vue";
+import { Todotype } from "../Types/toDo";
+
+defineProps<{ toDo: Todotype }>();
+
+const selectedPriority = ref("low");
+
+function handlePriorityChange(toDo: Todotype) {
+  if (toDo.isEditing) {
+    toDo.priority = selectedPriority.value;
+  }
+}
+
+function handlePriorityClick(toDo: Todotype) {
+  if (!toDo.isEditing) {
+    // Handle the click event when the item is not in editing mode
+  }
 }
 </script>
 
@@ -73,8 +90,8 @@ function handlePriorityChange(event: Event) {
     padding: 0;
   }
 
-  select {
+  /* select {
     appearance: none;
-  }
+  } */
 }
 </style>

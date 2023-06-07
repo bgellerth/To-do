@@ -2,6 +2,7 @@
   <div class="todo-list">
     <Header @todoAdded="addTodo" />
     <ClearAll @clearAll="clearAll" />
+
     <input
       v-if="todos.length"
       v-model="newTodo"
@@ -10,15 +11,39 @@
       placeholder="Add a new ToDo"
     />
     <ul class="list">
-      <div class="listed-items" v-for="(toDo, index) in todos" :key="index">
-        <div class="delete-btn">
-          <input class="title" type="text" placeholder="Title" />
-          <input class="todo-text" type="text" placeholder="New to do" />
-          {{ toDo }}
+      <div
+        @click.="toggleEdit(toDo)"
+        class="listed-items"
+        v-for="(toDo, index) in todos"
+        :key="index"
+      >
+        <div class="content">
+          <div class="text-title">
+            <input
+              class="title"
+              type="text"
+              placeholder="Title"
+              @input="toDo.isEditing"
+              @click.stop
+              :disabled="!toDo.isEditing"
+            />
+            <input
+              class="todo-text"
+              type="text"
+              placeholder="New to do"
+              @input="toDo.isEditing"
+              @click.stop
+              :disabled="!toDo.isEditing"
+            />
+          </div>
+          <div class="prio-check">
+            <PrioSelector :toDo="toDo" />
+            <CheckTodo class="status" />
+          </div>
         </div>
-        <div class="prio-check">
-          <PrioSelector />
-          <CheckTodo class="status" />
+        <div class="delete-save-btn" v-if="toDo.isEditing">
+          <SaveTodo :toDo="toDo" @todoSaved="saveTodo" />
+          <RemoveToDo @todoRemoved="removeTodo(index)" />
         </div>
       </div>
       <div class="no-input" v-if="!todos.length">
@@ -32,23 +57,42 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Workflow from "../assets/workflow.svg";
+import RemoveToDo from "../components/RemoveToDo.vue";
 import Header from "./Header.vue";
 import ClearAll from "../components/ClearAll.vue";
 import PrioSelector from "../components/PrioSelector.vue";
 import CheckTodo from "./checkTodo.vue";
+import SaveTodo from "../components/SaveTodo.vue";
+import { Todotype } from "../Types/toDo";
 
 defineProps<{ index: number }>();
 
-const todos = ref<string[]>([]);
+const todos = ref<Todotype[]>([]);
 const newTodo = ref("");
 
+function toggleEdit(toDo: Todotype) {
+  toDo.isEditing = !toDo.isEditing;
+}
 function addTodo() {
-  todos.value.push(newTodo.value);
+  todos.value.push({
+    text: newTodo.value,
+    isEditing: false,
+    priorityChange: false,
+    priority: "low",
+  });
   newTodo.value = "";
 }
 
 function clearAll() {
   todos.value = [];
+}
+
+function removeTodo(index: number) {
+  todos.value.splice(index, 1);
+}
+function saveTodo(toDo: Todotype) {
+  toDo.isEditing = false;
+  console.log("saveTodo");
 }
 </script>
 
@@ -77,7 +121,7 @@ function clearAll() {
   justify-content: space-between;
   align-items: flex-end;
 }
-.delete-btn {
+.text-title {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -92,6 +136,7 @@ function clearAll() {
 .listed-items {
   padding: 20px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
   list-style: none;
@@ -100,7 +145,7 @@ function clearAll() {
   border: 2px solid #000000;
   border-radius: 16px;
   width: 600px;
-  height: 163px;
+  min-height: 163px;
 }
 .workflow-img {
   width: 270px;
@@ -126,7 +171,28 @@ function clearAll() {
   outline: none;
 }
 
+.content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 @media (max-width: 768px) {
+  .content {
+  
+  }
+  .text-title {
+    width: 194.63px;
+    height: 22px;
+  }
+  .todo-text {
+    width: 221.75px;
+    height: 70.27px;
+  }
+
+  .delete-save-btn {
+    width: 60px;
+    height: 27px;
+  }
   .no-todos-text {
     font-size: 22px;
     line-height: 26px;
