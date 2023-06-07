@@ -77,7 +77,7 @@ function clearAll() {
 }
 .list {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
   gap: 50px;
 }
