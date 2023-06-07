@@ -12,7 +12,7 @@
     <ul class="list">
       <div class="listed-items" v-for="(toDo, index) in todos" :key="index">
         <div class="delete-btn">
-          <p class="title">Pay for rent</p>
+          <p class="title"></p>
           <p class="todo-text">
             {{ toDo }}
           </p>
