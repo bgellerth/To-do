@@ -12,18 +12,19 @@
     <ul class="list">
       <div class="listed-items" v-for="(toDo, index) in todos" :key="index">
         <div class="delete-btn">
-          <p class="title"></p>
-          <p class="todo-text">
-            {{ toDo }}
-          </p>
+          <input class="title" type="text" placeholder="Title" />
+          <input class="todo-text" type="text" placeholder="New to do" />
+          {{ toDo }}
         </div>
         <div class="prio-check">
           <PrioSelector />
           <CheckTodo class="status" />
         </div>
       </div>
-      <img class="workflow-img" v-if="!todos.length" :src="Workflow" />
-      <p class="no-todos-text">You have no todos yet</p>
+      <div class="no-input" v-if="!todos.length">
+        <img class="workflow-img" :src="Workflow" />
+        <p class="no-todos-text">You have no todos yet</p>
+      </div>
     </ul>
   </div>
 </template>
@@ -52,6 +53,12 @@ function clearAll() {
 </script>
 
 <style scoped>
+.no-input {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 .no-todos-text {
   font-family: "Neue Haas Grotesk Display Pro";
   font-style: normal;
@@ -98,6 +105,25 @@ function clearAll() {
 .workflow-img {
   width: 270px;
   height: 315px;
+}
+.title {
+  font-family: "Neue Haas Grotesk Display Pro";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 42px;
+  line-height: 50px;
+  width: 200px;
+  border: none;
+  outline: none;
+}
+.todo-text {
+  font-family: "Neue Haas Grotesk Display Pro";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 34px;
+  border: none;
+  outline: none;
 }
 
 @media (max-width: 768px) {
