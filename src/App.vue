@@ -13,6 +13,5 @@ import ToDoList from "./ToDoList/ToDoList.vue";
   height: 100vh;
   display: flex;
   justify-content: center;
-  
 }
 </style>
