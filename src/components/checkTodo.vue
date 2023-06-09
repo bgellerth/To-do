@@ -1,7 +1,11 @@
 <template>
-  <div class="status-container">
-    <div class="unchecked" v-if="!checked" @click="toggleCheck"></div>
-    <div class="checked-todo" v-else @click="toggleCheck">
+  <div v-if="!toDo.isEditing" class="status-container">
+    <div
+      v-if="!toDo.status"
+      class="un-checked"
+      @click.stop="toggleCheck(toDo)"
+    ></div>
+    <div v-else class="checked-todo" @click.stop="toggleCheck(toDo)">
       <div class="circle"></div>
       <img class="vector" src="../assets/Vector.svg" />
     </div>
@@ -9,56 +13,61 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { Todotype } from "../Types/toDo";
 
-const checked = ref(false);
+defineProps<{ toDo: Todotype }>();
 
-function toggleCheck() {
-  checked.value = !checked.value;
-
+function toggleCheck(toDo: Todotype) {
+  toDo.status = !toDo.status;
 }
 </script>
-<style>
-.checked-todo {
-  position: relative;
+<style scoped>
+.status-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.un-checked {
+  width: 24px;
+  height: 24px;
+  border: 4px solid black;
+  border-radius: 50%;
+}
 
-  width: 40px;
-  height: 40px;
+.circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 4px solid #4fda9b;
 }
 .vector {
   position: absolute;
-  top: -5px;
-}
-.circle {
-  position: absolute;
-  border: 6px solid #4fda9b;
-  border-radius: 50%;
+  top: -8px;
+  left: -1px;
   width: 30px;
   height: 30px;
 }
-
-.unchecked {
-  border: 6px solid black;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
+.checked-todo {
+  position: relative;
 }
 
-@media (max-width: 768px) {
-  .status-container {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+@media (min-width: 768px) {
+  .un-checked {
+    width: 40px;
+    height: 40px;
+    border: 6px solid black;
   }
-  .unchecked {
-    width: 25px;
-    height: 25px;
-  }
-  .vector,
   .circle {
-    width: 25px;
-    height: 25px;
+    width: 40px;
+    height: 40px;
+
+    border: 6px solid #4fda9b;
   }
+  .vector {
+  top: -5px;
+  left: 0px;
+  width: 44px;
+  height: 35px;
+}
 }
 </style>

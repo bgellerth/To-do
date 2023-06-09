@@ -1,144 +1,327 @@
 <template>
-  <div class="todo-list">
-    <Header @todoAdded="addTodo" />
-    <ClearAll @clearAll="clearAll" />
-    <input
-      v-if="todos.length"
-      v-model="newTodo"
-      maxlength="50"
-      type="text"
-      placeholder="Add a new ToDo"
-    />
-    <ul class="list">
-      <div class="listed-items" v-for="(toDo, index) in todos" :key="index">
-        <div class="delete-btn">
-          <p class="title">Pay for rent</p>
-          <p class="todo-text">
-            {{ toDo }}
-          </p>
+  <div class="wraper">
+    <div v-if="popup" class="popup">
+      <PopUp
+        @removeTodo="removeTodo"
+        @togglePopup="togglePopup"
+        :index="selectedTaskIndex"
+      />
+    </div>
+    <div class="todo-list">
+      <Header @todoAdded="addTodo" />
+      <ClearAll @clearAll="clearAll" />
+
+      <div class="list">
+        <div
+          @click="toggleEdit(toDo)"
+          class="listed-items"
+          v-for="(toDo, index) in todos"
+          :key="index"
+        >
+          <div class="content-container">
+            <CheckTodo :toDo="toDo" class="status" />
+            <div class="text-priority">
+              <div class="text-title">
+                <div>
+                  <input
+                    v-if="toDo.isEditing"
+                    class="title"
+                    type="text"
+                    placeholder="Title"
+                    @click.stop
+                    v-model="toDo.title"
+                    maxlength="15"
+                  />
+                  <p v-else class="todo-title">
+                    {{ toDo.title }}
+                  </p>
+                </div>
+                <div>
+                  <input
+                    v-if="toDo.isEditing"
+                    class="todo-text"
+                    type="text"
+                    placeholder="New to do"
+                    @click.stop
+                    v-model="toDo.text"
+                  />
+                  <p v-else class="todo-text">
+                    {{ toDo.text }}
+                  </p>
+                </div>
+              </div>
+              <PrioSelector :toDo="toDo" class="priority" />
+            </div>
+          </div>
+          <div class="delete-save-btn" v-if="toDo.isEditing">
+            <SaveTodo :toDo="toDo" @todoSaved="saveTodo" />
+
+            <button class="delete-button" @click="taskIndex(index)">
+              <p>Delete</p>
+            </button>
+          </div>
         </div>
-        <div class="prio-check">
-          <PrioSelector />
-          <CheckTodo class="status" />
+        <div class="no-input" v-if="!todos.length">
+          <img class="workflow-img" :src="Workflow" />
+          <p class="no-todos-text">You have no todos yet</p>
         </div>
       </div>
-      <img class="workflow-img" v-if="!todos.length" :src="Workflow" />
-      <p class="no-todos-text">You have no todos yet</p>
-    </ul>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 import Workflow from "../assets/workflow.svg";
 import Header from "./Header.vue";
 import ClearAll from "../components/ClearAll.vue";
 import PrioSelector from "../components/PrioSelector.vue";
 import CheckTodo from "./checkTodo.vue";
+import SaveTodo from "../components/SaveTodo.vue";
+import { Todotype } from "../Types/toDo";
+import PopUp from "./PopUp.vue";
 
 defineProps<{ index: number }>();
 
-const todos = ref<string[]>([]);
+const todos = ref<Todotype[]>([]);
 const newTodo = ref("");
+const popup = ref(false);
+const selectedTaskIndex = ref();
 
+function taskIndex(index: number) {
+  popup.value = true;
+  selectedTaskIndex.value = index;
+  console.log("hello", index);
+}
+
+function togglePopup() {
+  popup.value = !popup.value;
+}
+
+function toggleEdit(toDo: Todotype) {
+  toDo.isEditing = !toDo.isEditing;
+}
 function addTodo() {
-  todos.value.push(newTodo.value);
+  todos.value.push({
+    text: "Add your Todo",
+    isEditing: false,
+    priorityChange: false,
+    priority: 0,
+    title: "Title",
+    status: false,
+  });
   newTodo.value = "";
 }
 
 function clearAll() {
   todos.value = [];
 }
+
+function removeTodo(index: number) {
+  todos.value.splice(index, 1);
+  togglePopup();
+}
+function saveTodo(toDo: Todotype) {
+  toDo.isEditing = false;
+  console.log("saveTodo");
+}
+onMounted(() => {
+  const storedTodos = localStorage.getItem("todos");
+  if (storedTodos !== null) {
+    todos.value = JSON.parse(storedTodos);
+  }
+});
+
+watch(
+  todos,
+  (newValue) => {
+    localStorage.setItem("todos", JSON.stringify(newValue));
+  },
+  { deep: true }
+);
 </script>
 
 <style scoped>
-.no-todos-text {
-  font-family: "Neue Haas Grotesk Display Pro";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 42px;
-  line-height: 50px;
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Neue Hass Grotesk Display Pro";
+}
+.no-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.workflow-img {
+  width: 192px;
+  height: 221px;
+}
 
-  color: #6d6d6d;
+.text-priority {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  flex-grow: 1;
 }
+
+.content-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.status {
+  margin-right: 18px;
+}
+.listed-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  min-height: 82px;
+  width: 280px;
+  border: 2px solid #000000;
+  border-radius: 16px;
+}
+
+.content {
+  position: relative;
+  flex-direction: row-reverse;
+  height: 100%;
+  width: 100%;
+}
+.todo-text{
+  border: 0;
+}
+
+.text-title {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+}
+
+.title {
+  font-family: "SF Pro Text";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  width: 70%;
+  border: 0;
+}
+
+.delete-button {
+  font-size: 14px;
+  font-weight: 600px;
+  line-height: 17px;
+  width: 69px;
+  height: 27px;
+  border-radius: 8px;
+  border: 0;
+  outline: 0;
+  background-color: #e5e5e5;
+  padding: 5px 15px;
+}
+
+.delete-save-btn {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 38px;
+}
+
+.buttons {
+  width: 60px;
+  height: 27px;
+}
+
+.no-todos-text {
+  font-size: 22px;
+  line-height: 26px;
+}
+
+.workflow-img {
+  width: 190px;
+  height: 220px;
+}
+
 .todo-list {
-  margin-top: 170px;
-}
-.prio-check {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
 }
-.delete-btn {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+
 .list {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 50px;
+  gap: 30px;
 }
-
-.listed-items {
-  padding: 20px;
+.popup {
+  z-index: 99;
+  position: absolute;
   display: flex;
-  justify-content: space-between;
-  box-sizing: border-box;
-  list-style: none;
+  justify-content: center;
+  align-items: center;
+  inset: 0;
 
-  background: #ffffff;
-  border: 2px solid #000000;
-  border-radius: 16px;
-  width: 600px;
-  height: 163px;
+  width: 100%;
+  height: 100%;
 }
-.workflow-img {
-  width: 270px;
-  height: 315px;
+.wraper {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-@media (max-width: 768px) {
-  .no-todos-text {
-    font-size: 22px;
-    line-height: 26px;
-  }
-  .workflow-img {
-    width: 190px;
-    height: 220px;
-  }
+@media screen and (min-width: 768px) {
   .listed-items {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-
-    position: relative;
-
-    width: 280px;
-    height: 80px;
-    max-height: 160px;
-
-    background: #ffffff;
-    border: 2px solid #000000;
+    width: 610px;
+    height: 100%;
+    min-height: 163px;
+    justify-content: flex-start;
+    border: 2px solid black;
     border-radius: 16px;
   }
 
+  .content-container {
+  }
   .status {
     position: absolute;
-    top: 0;
-    left: 1rem;
+    margin-right: 0;
+    bottom: 20px;
+    right: 22px;
   }
-
+  .delete-button {
+    width: 120px;
+    height: 52px;
+    font-size: 18px;
+    line-height: 22px;
+    border-radius: 16px;
+  }
+  .todo-title {
+    font-size: 42px;
+    line-height: 50px;
+    color: #757575;
+    width: 80%;
+  }
   .todo-text {
-    margin-left: 2rem;
+    font-size: 28px;
+    line-height: 34px;
+    color: #757575;
+    width: 100%;
   }
 
-  .title {
-    margin-left: 2rem;
+  .text-title {
+    width: 80%;
+  }
+  .delete-save-btn {
+    margin-top: 30px;
   }
 }
 </style>
