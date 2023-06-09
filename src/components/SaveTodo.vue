@@ -20,17 +20,26 @@ function saveTodo() {
 
 <style scoped>
 .save-button {
-  width: 120px;
-  height: 50px;
-  border: none;
-
-  background: #38cb89;
-  border-radius: 16px;
-}
-@media (max-width: 768px) {
-  .save-button {
     width: 60px;
     height: 27px;
+    border: 0;
+    outline: 0;
+    background-color: #38cb89;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    line-height: 17px;
+    
   }
+
+@media (min-width: 768px) {
+    .save-button{
+      width: 120px;
+      height: 52px;
+      font-size: 18px;
+      line-height: 22px;
+      border-radius: 16px;
+    }
+
 }
 </style>
