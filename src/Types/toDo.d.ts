@@ -1,7 +1,8 @@
 export type Todotype={
     text: string  
     isEditing: boolean
-    priorityChange:false
-    priority:string
-
+    priorityChange:boolean
+    priority:Tuple
+    title:String
+    status:boolean
 }
