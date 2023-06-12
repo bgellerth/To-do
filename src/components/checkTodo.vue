@@ -3,9 +3,9 @@
     <div
       v-if="!toDo.status"
       class="un-checked"
-      @click.stop="toggleCheck(toDo)"
+      @click.stop="markTodoStatus(toDo)"
     ></div>
-    <div v-else class="checked-todo" @click.stop="toggleCheck(toDo)">
+    <div v-else class="checked-todo" @click.stop="markTodoStatus(toDo)">
       <div class="circle"></div>
       <img class="vector" src="../assets/Vector.svg" />
     </div>
@@ -16,9 +16,19 @@
 import { Todotype } from "../Types/toDo";
 
 defineProps<{ toDo: Todotype }>();
+const emit = defineEmits<{
+  (e: "setCheckedTodos", toDo: Todotype): void;
+  (e: "notCheckedTodos", toDo: Todotype): void;
+}>();
 
-function toggleCheck(toDo: Todotype) {
-  toDo.status = !toDo.status;
+function markTodoStatus(toDo: Todotype) {
+  if (toDo.status) {
+    toDo.status = false;
+    emit("notCheckedTodos", toDo);
+  } else {
+    toDo.status = true;
+    emit("setCheckedTodos", toDo);
+  }
 }
 </script>
 <style scoped>
@@ -64,10 +74,10 @@ function toggleCheck(toDo: Todotype) {
     border: 6px solid #4fda9b;
   }
   .vector {
-  top: -5px;
-  left: 0px;
-  width: 44px;
-  height: 35px;
-}
+    top: -5px;
+    left: 0px;
+    width: 44px;
+    height: 35px;
+  }
 }
 </style>

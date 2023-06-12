@@ -12,61 +12,26 @@
       <ClearAll @clearAll="clearAll" />
 
       <div class="list">
-        <div
-          @click="toggleEdit(toDo)"
-          class="listed-items"
-          v-for="(toDo, index) in todos"
-          :key="index"
-        >
-          <div class="content-container">
-            <CheckTodo :toDo="toDo" class="status" />
-            <div class="text-priority">
-              <div class="text-title">
-                <div>
-                  <input
-                    v-if="toDo.isEditing"
-                    class="title"
-                    type="text"
-                    placeholder="Title"
-                    @click.stop
-                    v-model="toDo.title"
-                    maxlength="15"
-                  />
-                  <p v-else class="todo-title">
-                    {{ toDo.title }}
-                  </p>
-                </div>
-                <div>
-                  <input
-                    v-if="toDo.isEditing"
-                    class="todo-text"
-                    type="text"
-                    placeholder="New to do"
-                    @click.stop
-                    v-model="toDo.text"
-                  />
-                  <p v-else class="todo-text">
-                    {{ toDo.text }}
-                  </p>
-                </div>
-              </div>
-              <PrioSelector :toDo="toDo" class="priority" />
-            </div>
-          </div>
-          <div class="delete-save-btn" v-if="toDo.isEditing">
-            <SaveTodo :toDo="toDo" @todoSaved="saveTodo" />
-
-            <button class="delete-button" @click="taskIndex(index)">
-              <p>Delete</p>
-            </button>
-          </div>
-        </div>
+        <SingleToDo
+          :todos="todos"
+          @toggleEdit="toggleEdit"
+          @setCheckedTodos="setCheckedTodos"
+          @saveTodo="saveTodo"
+          @taskIndex="taskIndex"
+          @notCheckedTodos="notCheckedTodos"
+        />
         <div class="no-input" v-if="!todos.length">
           <img class="workflow-img" :src="Workflow" />
           <p class="no-todos-text">You have no todos yet</p>
         </div>
       </div>
     </div>
+    <TodoChecked
+      v-if="checkedTodos.length > 0"
+      :todos="todos"
+      :checkedTodos="checkedTodos"
+      @notCheckedTodos="notCheckedTodos"
+    />
   </div>
 </template>
 
@@ -75,11 +40,10 @@ import { ref, onMounted, watch } from "vue";
 import Workflow from "../assets/workflow.svg";
 import Header from "./Header.vue";
 import ClearAll from "../components/ClearAll.vue";
-import PrioSelector from "../components/PrioSelector.vue";
-import CheckTodo from "./checkTodo.vue";
-import SaveTodo from "../components/SaveTodo.vue";
+import SingleToDo from "../components/SingleToDo.vue";
 import { Todotype } from "../Types/toDo";
 import PopUp from "./PopUp.vue";
+import TodoChecked from "./TodoChecked.vue";
 
 defineProps<{ index: number }>();
 
@@ -87,6 +51,23 @@ const todos = ref<Todotype[]>([]);
 const newTodo = ref("");
 const popup = ref(false);
 const selectedTaskIndex = ref();
+const checkedTodos = ref<Todotype[]>([]);
+
+function setCheckedTodos(toDo: Todotype) {
+  const index = todos.value.findIndex((item) => item === toDo);
+  if (index !== -1) {
+    const checkedTodo = todos.value.splice(index, 1)[0];
+    checkedTodos.value.push(checkedTodo);
+  }
+}
+function notCheckedTodos(toDo: Todotype) {
+  const index = checkedTodos.value.findIndex((item) => item === toDo);
+  if (index !== -1) {
+    const uncheckedTodo = checkedTodos.value.splice(index, 1)[0];
+    uncheckedTodo.status = false;
+    todos.value.push({ ...uncheckedTodo });
+  }
+}
 
 function taskIndex(index: number) {
   popup.value = true;
@@ -115,6 +96,7 @@ function addTodo() {
 
 function clearAll() {
   todos.value = [];
+  checkedTodos.value = [];
 }
 
 function removeTodo(index: number) {
@@ -130,12 +112,24 @@ onMounted(() => {
   if (storedTodos !== null) {
     todos.value = JSON.parse(storedTodos);
   }
+  const storedCheckedTodos = localStorage.getItem("checkedTodos");
+  if (storedCheckedTodos !== null) {
+    checkedTodos.value = JSON.parse(storedCheckedTodos);
+  }
 });
 
 watch(
   todos,
   (newValue) => {
     localStorage.setItem("todos", JSON.stringify(newValue));
+  },
+  { deep: true }
+);
+
+watch(
+  checkedTodos,
+  (newValue) => {
+    localStorage.setItem("checkedTodos", JSON.stringify(newValue));
   },
   { deep: true }
 );
@@ -195,7 +189,7 @@ watch(
   height: 100%;
   width: 100%;
 }
-.todo-text{
+.todo-text {
   border: 0;
 }
 
@@ -258,7 +252,7 @@ watch(
 
 .list {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
   gap: 30px;
 }
