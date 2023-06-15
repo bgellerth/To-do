@@ -20,6 +20,7 @@
           @taskIndex="taskIndex"
           @notCheckedTodos="notCheckedTodos"
         />
+        <Search v-if="todos.length" />
         <div class="no-input" v-if="!todos.length">
           <img class="workflow-img" :src="Workflow" />
           <p class="no-todos-text">You have no todos yet</p>
@@ -44,6 +45,7 @@ import SingleToDo from "../components/SingleToDo.vue";
 import { Todotype } from "../Types/toDo";
 import PopUp from "./PopUp.vue";
 import TodoChecked from "./TodoChecked.vue";
+import Search from "../components/Search.vue";
 
 defineProps<{ index: number }>();
 
@@ -283,8 +285,6 @@ watch(
     border-radius: 16px;
   }
 
-  .content-container {
-  }
   .status {
     position: absolute;
     margin-right: 0;
@@ -316,6 +316,11 @@ watch(
   }
   .delete-save-btn {
     margin-top: 30px;
+  }
+
+  .workflow-img {
+    width: 273px;
+    height: 315px;
   }
 }
 </style>
