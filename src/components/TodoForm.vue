@@ -13,14 +13,17 @@
 
       <div class="list">
         <SingleToDo
-          :todos="todos"
+          :handleSearch="handleSearch"
+          :todos="searchTodos"
           @toggleEdit="toggleEdit"
           @setCheckedTodos="setCheckedTodos"
           @saveTodo="saveTodo"
           @taskIndex="taskIndex"
           @notCheckedTodos="notCheckedTodos"
+          :index="selectedTaskIndex"
+          :checkedTodos="checkedTodos"
         />
-        <Search v-if="todos.length" />
+        <Search v-model="handleSearch" v-if="todos.length" />
         <div class="no-input" v-if="!todos.length">
           <img class="workflow-img" :src="Workflow" />
           <p class="no-todos-text">You have no todos yet</p>
@@ -32,12 +35,16 @@
       :todos="todos"
       :checkedTodos="checkedTodos"
       @notCheckedTodos="notCheckedTodos"
+      @toggleEdit="toggleEdit"
+      @saveTodo="saveTodo"
+      @deleteCheckedTodos="deleteCheckedTodos"
+      @editChecked="editChecked"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import Workflow from "../assets/workflow.svg";
 import Header from "./Header.vue";
 import ClearAll from "../components/ClearAll.vue";
@@ -54,6 +61,7 @@ const newTodo = ref("");
 const popup = ref(false);
 const selectedTaskIndex = ref();
 const checkedTodos = ref<Todotype[]>([]);
+const handleSearch = ref("");
 
 function setCheckedTodos(toDo: Todotype) {
   const index = todos.value.findIndex((item) => item === toDo);
@@ -67,14 +75,21 @@ function notCheckedTodos(toDo: Todotype) {
   if (index !== -1) {
     const uncheckedTodo = checkedTodos.value.splice(index, 1)[0];
     uncheckedTodo.status = false;
+
     todos.value.push({ ...uncheckedTodo });
   }
 }
+const searchTodos = computed(() => {
+  return todos.value.filter((toDo) =>
+    (toDo.title + toDo.text)
+      .toLowerCase()
+      .includes(handleSearch.value.toLowerCase())
+  );
+});
 
 function taskIndex(index: number) {
   popup.value = true;
   selectedTaskIndex.value = index;
-  console.log("hello", index);
 }
 
 function togglePopup() {
@@ -107,11 +122,11 @@ function removeTodo(index: number) {
 }
 function saveTodo(toDo: Todotype) {
   toDo.isEditing = false;
-  console.log("saveTodo");
 }
+
 onMounted(() => {
   const storedTodos = localStorage.getItem("todos");
-  if (storedTodos !== null) {
+  if (storedTodos) {
     todos.value = JSON.parse(storedTodos);
   }
   const storedCheckedTodos = localStorage.getItem("checkedTodos");
@@ -135,6 +150,14 @@ watch(
   },
   { deep: true }
 );
+
+function deleteCheckedTodos(index: number) {
+  checkedTodos.value.splice(index, 1);
+}
+
+function editChecked(checkedTodo: Todotype) {
+  checkedTodo.isEditing = !checkedTodo.isEditing;
+}
 </script>
 
 <style scoped>
@@ -155,7 +178,6 @@ watch(
   width: 192px;
   height: 221px;
 }
-
 .text-priority {
   display: flex;
   align-items: center;
@@ -281,8 +303,7 @@ watch(
     height: 100%;
     min-height: 163px;
     justify-content: flex-start;
-    border: 2px solid black;
-    border-radius: 16px;
+    
   }
 
   .status {
@@ -310,14 +331,12 @@ watch(
     color: #757575;
     width: 100%;
   }
-
   .text-title {
     width: 80%;
   }
   .delete-save-btn {
     margin-top: 30px;
   }
-
   .workflow-img {
     width: 273px;
     height: 315px;

@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 const emit = defineEmits<{
-  (e: "clearAll"): void;
+  (e: 'clearAll'): void;
 }>();
 
 function clearAll() {

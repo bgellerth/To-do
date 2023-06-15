@@ -5,19 +5,32 @@
       <input
         class="search-input"
         type="text"
-        model="searchQuery"
-        input="handleSearch"
         placeholder="Search todos..."
+        v-model="searchInput"
       />
-      <button click="performSearch" type="button" class="search-btn">
-        Search
-      </button>
+      <button type="button" class="search-btn">Search</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import SearchIcon from "../assets/SearchIcon.svg";
+
+const props = defineProps<{
+  modelValue: string;
+}>();
+const emit = defineEmits<{
+  (e: 'update:modelValue', newValue: string): void;
+}>();
+const searchInput = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(inputValue) {
+    emit('update:modelValue', inputValue);
+  },
+});
 </script>
 
 <style scoped>
