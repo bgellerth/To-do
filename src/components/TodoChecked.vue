@@ -20,26 +20,24 @@ import SingleToDo from "./SingleToDo.vue";
 const props = defineProps<{ checkedTodos: Todotype[]; todos: Todotype[] }>();
 
 const emit = defineEmits<{
-  (e: 'notCheckedTodos', toDo: Todotype): void;
-  (e: 'editChecked', checkedTodo: Todotype): void;
-  (e: 'saveTodo', toDo: Todotype): void;
-  (e: 'deleteCheckedTodos', index: number): void;
+  (e: "notCheckedTodos", toDo: Todotype): void;
+  (e: "editChecked", checkedTodo: Todotype): void;
+  (e: "saveTodo", toDo: Todotype): void;
+  (e: "deleteCheckedTodos", index: number): void;
 }>();
 
 function notCheckedTodos(toDo: Todotype) {
-  emit('notCheckedTodos', toDo);
+  emit("notCheckedTodos", toDo);
 }
 
 function saveTodo(toDo: Todotype) {
-  emit('saveTodo', toDo);
+  emit("saveTodo", toDo);
 }
 
 function deleteCheckedTodos(index: number) {
-  emit('deleteCheckedTodos', index);
+  emit("deleteCheckedTodos", index);
 }
 function editChecked(checkedTodo: Todotype) {
-  return () => {
-    emit('editChecked', checkedTodo);
-  };
+  emit("editChecked", checkedTodo);
 }
 </script>

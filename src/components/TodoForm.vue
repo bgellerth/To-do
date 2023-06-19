@@ -57,11 +57,11 @@ import Search from "../components/Search.vue";
 defineProps<{ index: number }>();
 
 const todos = ref<Todotype[]>([]);
-const newTodo = ref("");
+const newTodo = ref('');
 const popup = ref(false);
 const selectedTaskIndex = ref();
 const checkedTodos = ref<Todotype[]>([]);
-const handleSearch = ref("");
+const handleSearch = ref('');
 
 function setCheckedTodos(toDo: Todotype) {
   const index = todos.value.findIndex((item) => item === toDo);
@@ -303,7 +303,6 @@ function editChecked(checkedTodo: Todotype) {
     height: 100%;
     min-height: 163px;
     justify-content: flex-start;
-    
   }
 
   .status {
