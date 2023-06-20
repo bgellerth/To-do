@@ -10,11 +10,11 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: "todoSaved", toDo: Todotype): void;
+  (e: 'todoSaved', toDo: Todotype): void;
 }>();
 
 function saveTodo() {
-  emit("todoSaved", props.toDo);
+  emit('todoSaved', props.toDo);
 }
 </script>
 

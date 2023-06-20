@@ -11,6 +11,7 @@
         class="status"
         @setCheckedTodos="setCheckedTodos"
         @notCheckedTodos="notCheckedTodos"
+        @deleteTodo="deleteTodo"
       />
       <div class="text-priority">
         <div class="text-title">
@@ -61,30 +62,42 @@ import CheckTodo from "./checkTodo.vue";
 import SaveTodo from "../components/SaveTodo.vue";
 import { Todotype } from "../Types/toDo";
 
-const props = defineProps<{ todos: Todotype[] }>();
+const props = defineProps<{ todos: Todotype[]; checkedTodos: Todotype[] }>();
 const emit = defineEmits<{
-  (e: "toggleEdit", toDo: Todotype): void;
-  (e: "setCheckedTodos", toDo: Todotype): void;
-  (e: "saveTodo", toDo: Todotype): void;
-  (e: "taskIndex", index: number): void;
-  (e: "notCheckedTodos", toDo: Todotype): void;
+  (e: 'toggleEdit', toDo: Todotype, checkedTodo: Todotype): void;
+  (e: 'setCheckedTodos', toDo: Todotype): void;
+  (e: 'saveTodo', toDo: Todotype): void;
+  (e: 'taskIndex', index: number): void;
+  (e: 'notCheckedTodos', toDo: Todotype): void;
+  (e: 'deleteCheckedTodos', index: number): void;
 }>();
 
-function toggleEdit(toDo: Todotype) {
-  emit("toggleEdit", toDo);
+function toggleEdit(checkedTodo: Todotype) {
+  checkedTodo.isEditing = true;
 }
+
 function setCheckedTodos(toDo: Todotype) {
-  emit("setCheckedTodos", toDo);
+  emit('setCheckedTodos', toDo);
 }
+
 function saveTodo(toDo: Todotype) {
-  emit("saveTodo", toDo);
+  emit('saveTodo', toDo);
 }
+
 function taskIndex(index: number) {
-  emit("taskIndex", index);
+  emit('taskIndex', index);
+  emit('deleteCheckedTodos', index);
 }
 
 function notCheckedTodos(toDo: Todotype) {
-  emit("notCheckedTodos", toDo);
+  emit('notCheckedTodos', toDo);
+}
+
+function deleteTodo(toDo: Todotype) {
+  const index = props.todos.indexOf(toDo);
+  if (index > -1) {
+    props.todos.splice(index, 1);
+  }
 }
 </script>
 
@@ -236,8 +249,6 @@ function notCheckedTodos(toDo: Todotype) {
     border-radius: 16px;
   }
 
-  .content-container {
-  }
   .status {
     position: absolute;
     margin-right: 0;

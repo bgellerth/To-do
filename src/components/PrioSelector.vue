@@ -43,7 +43,7 @@ import type { Todotype } from "../Types/toDo";
 import arrowDown from "../components/arrowDown.vue";
 defineProps<{ toDo: Todotype }>();
 
-const priority = { 0: "low", 1: "medium", 2: "high" };
+const priority = { 0: 'low', 1: 'medium', 2: 'high' };
 
 function handlePriorityChange(index: keyof typeof priority) {
   return priority[index];
@@ -68,11 +68,9 @@ function changePriority(toDo: Todotype) {
 .desktop-priority {
   display: none;
 }
-
 .selected {
   border: 1px solid black;
 }
-
 .dropdown {
   position: absolute;
   display: flex;
@@ -92,19 +90,15 @@ function changePriority(toDo: Todotype) {
 
   border-radius: 50%;
 }
-
 .high {
   background-color: #ff481f;
 }
-
 .medium {
   background-color: #ffab00;
 }
-
 .low {
   background-color: #38cbcb;
 }
-
 @media (min-width: 768px) {
   .todo-priority-container {
     position: absolute;
@@ -139,7 +133,6 @@ function changePriority(toDo: Todotype) {
     display: none;
     gap: 0;
   }
-
   .todo-priority {
     display: block;
   }

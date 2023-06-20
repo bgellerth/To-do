@@ -13,11 +13,11 @@
 <script setup lang="ts">
 
 const emit = defineEmits<{
-  (e: "todoAdded"): void;
+  (e: 'todoAdded'): void;
 }>();
 
 function addTodo() {
-  emit("todoAdded");
+  emit('todoAdded');
 }
 </script>
 

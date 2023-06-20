@@ -13,21 +13,21 @@
 </template>
 
 <script setup lang="ts">
-import { Todotype } from "../Types/toDo";
+import { Todotype } from '../Types/toDo';
 
 defineProps<{ toDo: Todotype }>();
 const emit = defineEmits<{
-  (e: "setCheckedTodos", toDo: Todotype): void;
-  (e: "notCheckedTodos", toDo: Todotype): void;
+  (e: 'setCheckedTodos', toDo: Todotype): void;
+  (e: 'notCheckedTodos', toDo: Todotype): void;
 }>();
 
 function markTodoStatus(toDo: Todotype) {
   if (toDo.status) {
     toDo.status = false;
-    emit("notCheckedTodos", toDo);
+    emit('notCheckedTodos', toDo);
   } else {
     toDo.status = true;
-    emit("setCheckedTodos", toDo);
+    emit('setCheckedTodos', toDo);
   }
 }
 </script>
@@ -37,18 +37,14 @@ function markTodoStatus(toDo: Todotype) {
   justify-content: center;
   align-items: center;
 }
-.un-checked {
+.un-checked ,.circle{
   width: 24px;
   height: 24px;
   border: 4px solid black;
   border-radius: 50%;
 }
-
 .circle {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 4px solid #4fda9b;
+  border: 4px solid #4fda9b!important;
 }
 .vector {
   position: absolute;
@@ -60,7 +56,6 @@ function markTodoStatus(toDo: Todotype) {
 .checked-todo {
   position: relative;
 }
-
 @media (min-width: 768px) {
   .un-checked {
     width: 40px;
