@@ -66,19 +66,19 @@
 </template>
 
 <script setup lang="ts">
-import PrioSelector from "../components/PrioSelector.vue";
-import CheckTodo from "./checkTodo.vue";
-import SaveTodo from "../components/SaveTodo.vue";
-import { Todotype } from "../Types/toDo";
+import PrioSelector from '../components/PrioSelector.vue';
+import CheckTodo from './checkTodo.vue';
+import SaveTodo from '../components/SaveTodo.vue';
+import { Todotype } from '../Types/toDo';
 
 const props = defineProps<{ todos: Todotype[]; checkedTodos: Todotype[] }>();
 const emit = defineEmits<{
-  (e: "toggleEdit", toDo: Todotype, checkedTodo: Todotype): void;
-  (e: "setCheckedTodos", toDo: Todotype): void;
-  (e: "saveTodo", toDo: Todotype): void;
-  (e: "taskIndex", index: number): void;
-  (e: "notCheckedTodos", toDo: Todotype): void;
-  (e: "deleteCheckedTodos", index: number): void;
+  (e: 'toggleEdit', toDo: Todotype, checkedTodo: Todotype): void;
+  (e: 'setCheckedTodos', toDo: Todotype): void;
+  (e: 'saveTodo', toDo: Todotype): void;
+  (e: 'taskIndex', index: number): void;
+  (e: 'notCheckedTodos', toDo: Todotype): void;
+  (e: 'deleteCheckedTodos', index: number): void;
 }>();
 
 function toggleEdit(checkedTodo: Todotype) {
@@ -86,20 +86,20 @@ function toggleEdit(checkedTodo: Todotype) {
 }
 
 function setCheckedTodos(toDo: Todotype) {
-  emit("setCheckedTodos", toDo);
+  emit('setCheckedTodos', toDo);
 }
 
 function saveTodo(toDo: Todotype) {
-  emit("saveTodo", toDo);
+  emit('saveTodo', toDo);
 }
 
 function taskIndex(index: number) {
-  emit("taskIndex", index);
-  emit("deleteCheckedTodos", index);
+  emit('taskIndex', index);
+  emit('deleteCheckedTodos', index);
 }
 
 function notCheckedTodos(toDo: Todotype) {
-  emit("notCheckedTodos", toDo);
+  emit('notCheckedTodos', toDo);
 }
 
 function deleteTodo(toDo: Todotype) {
@@ -117,6 +117,6 @@ function deleteTodo(toDo: Todotype) {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Neue Hass Grotesk Display Pro";
+  font-family: 'Neue Hass Grotesk Display Pro';
 }
 </style>

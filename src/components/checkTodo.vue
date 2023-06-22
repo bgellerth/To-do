@@ -18,21 +18,21 @@
 </template>
 
 <script setup lang="ts">
-import { Todotype } from "../Types/toDo";
+import { Todotype } from '../Types/toDo';
 
 defineProps<{ toDo: Todotype }>();
 const emit = defineEmits<{
-  (e: "setCheckedTodos", toDo: Todotype): void;
-  (e: "notCheckedTodos", toDo: Todotype): void;
+  (e: 'setCheckedTodos', toDo: Todotype): void;
+  (e: 'notCheckedTodos', toDo: Todotype): void;
 }>();
 
 function markTodoStatus(toDo: Todotype) {
   if (toDo.status) {
     toDo.status = false;
-    emit("notCheckedTodos", toDo);
+    emit('notCheckedTodos', toDo);
   } else {
     toDo.status = true;
-    emit("setCheckedTodos", toDo);
+    emit('setCheckedTodos', toDo);
   }
 }
 </script>

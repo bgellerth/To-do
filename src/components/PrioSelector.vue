@@ -78,17 +78,17 @@
 </template>
 
 <script setup lang="ts">
-import type { Todotype } from "../Types/toDo";
-import arrowDown from "../components/arrowDown.vue";
-import { computed } from "vue";
+import type { Todotype } from '../Types/toDo';
+import arrowDown from '../components/arrowDown.vue';
+import { computed } from 'vue';
 const props = defineProps<{ toDo: Todotype }>();
 
-const priority = { 0: "low", 1: "medium", 2: "high" };
+const priority = { 0: 'low', 1: 'medium', 2: 'high' };
 
 const colorMaps: Record<number, string> = {
-  0: "bg-teal-400",
-  1: "bg-amber-400",
-  2: "bg-orange-600",
+  0: 'bg-teal-400',
+  1: 'bg-amber-400',
+  2: 'bg-orange-600',
 };
 const getPriorityColor = computed(
   () => colorMaps[props.toDo.priority as keyof typeof colorMaps]

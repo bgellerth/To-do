@@ -27,15 +27,15 @@
 <script setup lang="ts">
 const props = defineProps<{ index: number }>();
 const emit = defineEmits<{
-  (e: "removeTodo", index: number): void;
-  (e: "togglePopup"): void;
+  (e: 'removeTodo', index: number): void;
+  (e: 'togglePopup'): void;
 }>();
 
 function togglePopup() {
-  emit("togglePopup");
+  emit('togglePopup');
 }
 
 function removeTodo() {
-  emit("removeTodo", props.index);
+  emit('removeTodo', props.index);
 }
 </script>

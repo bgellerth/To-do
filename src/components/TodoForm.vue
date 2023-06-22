@@ -49,24 +49,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from "vue";
-import Workflow from "../assets/workflow.svg";
-import Header from "./Header.vue";
-import ClearAll from "../components/ClearAll.vue";
-import SingleToDo from "../components/SingleToDo.vue";
-import { Todotype } from "../Types/toDo";
-import PopUp from "./PopUp.vue";
-import TodoChecked from "./TodoChecked.vue";
-import Search from "../components/Search.vue";
+import { ref, onMounted, watch, computed } from 'vue';
+import Workflow from '../assets/workflow.svg';
+import Header from './Header.vue';
+import ClearAll from '../components/ClearAll.vue';
+import SingleToDo from '../components/SingleToDo.vue';
+import { Todotype } from '../Types/toDo';
+import PopUp from './PopUp.vue';
+import TodoChecked from './TodoChecked.vue';
+import Search from '../components/Search.vue';
 
 defineProps<{ index: number }>();
 
 const todos = ref<Todotype[]>([]);
-const newTodo = ref("");
+const newTodo = ref('');
 const popup = ref(false);
 const selectedTaskIndex = ref();
 const checkedTodos = ref<Todotype[]>([]);
-const handleSearch = ref("");
+const handleSearch = ref('');
 
 function setCheckedTodos(toDo: Todotype) {
   const index = todos.value.findIndex((item) => item === toDo);
@@ -106,14 +106,14 @@ function toggleEdit(toDo: Todotype) {
 }
 function addTodo() {
   todos.value.push({
-    text: "Add your Todo",
+    text: 'Add your Todo',
     isEditing: false,
     priorityChange: false,
     priority: 0,
-    title: "Title",
+    title: 'Title',
     status: false,
   });
-  newTodo.value = "";
+  newTodo.value = '';
 }
 
 function clearAll() {
@@ -130,11 +130,11 @@ function saveTodo(toDo: Todotype) {
 }
 
 onMounted(() => {
-  const storedTodos = localStorage.getItem("todos");
+  const storedTodos = localStorage.getItem('todos');
   if (storedTodos) {
     todos.value = JSON.parse(storedTodos);
   }
-  const storedCheckedTodos = localStorage.getItem("checkedTodos");
+  const storedCheckedTodos = localStorage.getItem('checkedTodos');
   if (storedCheckedTodos !== null) {
     checkedTodos.value = JSON.parse(storedCheckedTodos);
   }
@@ -143,7 +143,7 @@ onMounted(() => {
 watch(
   todos,
   (newValue) => {
-    localStorage.setItem("todos", JSON.stringify(newValue));
+    localStorage.setItem('todos', JSON.stringify(newValue));
   },
   { deep: true }
 );
@@ -151,7 +151,7 @@ watch(
 watch(
   checkedTodos,
   (newValue) => {
-    localStorage.setItem("checkedTodos", JSON.stringify(newValue));
+    localStorage.setItem('checkedTodos', JSON.stringify(newValue));
   },
   { deep: true }
 );

@@ -8,17 +8,17 @@
 </template>
 
 <script setup lang="ts">
-import type { Todotype } from "../Types/toDo";
+import type { Todotype } from '../Types/toDo';
 
 const props = defineProps<{
   toDo: Todotype;
 }>();
 
 const emit = defineEmits<{
-  (e: "todoSaved", toDo: Todotype): void;
+  (e: 'todoSaved', toDo: Todotype): void;
 }>();
 
 function saveTodo() {
-  emit("todoSaved", props.toDo);
+  emit('todoSaved', props.toDo);
 }
 </script>
