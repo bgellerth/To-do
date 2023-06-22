@@ -1,69 +1,25 @@
 <template>
-  <div class="container">
-    <div class="header">
-      <h1 class="title">To do list</h1>
-      <button @click="addTodo" class="add"><svg viewBox="-4 -4 32 32" stroke-width="1.5" stroke="white" >
-    <path d="M12 4.5v15m7.5-7.5h-15" />
-  </svg>
-  </button>
+  <div class="flex-col my-8 mx-auto md:max-width w-full">
+    <div class="flex justify-between items-center">
+      <h1 class="m-0 font-semibold text-2xl md:text-7xl">To do list</h1>
+      <button
+        @click="addTodo"
+        class="w-8 h-8 bg-emerald-500 rounded-full md:w-14 md:h-14 md:border-0"
+      >
+        <svg viewBox="-4 -4 32 32" stroke-width="1.5" stroke="white">
+          <path d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-
 const emit = defineEmits<{
-  (e: 'todoAdded'): void;
+  (e: "todoAdded"): void;
 }>();
 
 function addTodo() {
-  emit('todoAdded');
+  emit("todoAdded");
 }
 </script>
-
-<style scoped>
-.container {
-  max-width: 600px;
-  flex-direction: column;
-  width: 600px;
-  margin: 32px auto;
-}
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.title {
-  margin: 0px;
-  font-family: "Neue Haas Grotesk Display Pro";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 72px;
-  line-height: 86px;
-
-  color: #000000;
-}
-
-.add {
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  border: none;
-  background: #38cb89;
-}
-
-@media (max-width: 758px) {
-  .title {
-    font-size: 24px;
-  }
-  .add {
-    width: 32px;
-    height: 32px;
-    left: 271.38px;
-    top: 133px;
-  }
-  .container {
-    max-width: 300px;
-  }
-}
-</style>

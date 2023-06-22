@@ -2,38 +2,77 @@
   <div
     @click.stop="changePriority(toDo)"
     :class="[
-      'todo-priority-container',
-      { 'todo-priority': toDo.isEditing },
-      { 'dropdown-active': toDo.priorityChange },
-      handlePriorityChange(toDo.priority),
+      'w-3 h-3 md:absolute md:top-6 md:right-5 md:w-32 md:h-9 md:rounded-full md:cursor-pointer md:text-white ',
+      { 'hidden md:block': toDo.isEditing },
+      {
+        'md:border-2 md:bg-white md:text-black md:border-black':
+          toDo.priorityChange,
+      },
+      getPriorityColor,
     ]"
   >
-    <p class="desktop-priority">
+    <p
+      class="hidden md:flex md:justify-center md:items-center md:leading-8 gap-2"
+    >
       {{ handlePriorityChange(toDo.priority) }}
-      <arrowDown :priorityChange="toDo.priorityChange" class="arrow-down" />
+      <arrowDown
+        v-if="toDo.isEditing"
+        :priorityChange="toDo.priorityChange"
+        class="arrow-down md:w-5 md:h-5"
+      />
     </p>
   </div>
   <div
     v-if="toDo.isEditing"
-    :class="['dropdown', { 'dropdown-toggle': toDo.priorityChange }]"
+    :class="[
+      'absolute top-4 gap-2 right-5 items-center flex flex-row md:hidden md:gap-0',
+      {
+        'md:dropdown-toggle md:justify-between md:absolute md:top-16 md:flex-col md:bg-white md:border-2 md:border-black rounded-2xl md:!flex ':
+          toDo.priorityChange,
+      },
+    ]"
   >
     <div
       @click.stop="selectPriority(toDo, 0)"
-      :class="['low', 'priorities', { selected: toDo.priority === 0 }]"
+      :class="[
+        'bg-teal-400',
+        'h-3 w-3 rounded-full cursor-pointer md:!bg-white md:h-8 md:w-full md:rounded-full md:text-xs md:p-0',
+        { 'selected border border-black md:border-none': toDo.priority === 0 },
+      ]"
     >
-      <p class="desktop-priority">Low</p>
+      <p
+        class="desktop-priority hidden md:flex md:justify-center md:items-center md:leading-8 gap-2"
+      >
+        Low
+      </p>
     </div>
     <div
       @click.stop="selectPriority(toDo, 1)"
-      :class="['medium', 'priorities', { selected: toDo.priority === 1 }]"
+      :class="[
+        'bg-amber-500',
+        'h-3 w-3 rounded-full cursor-pointer md:!bg-white md:h-8 md:w-full md:rounded-full md:text-xs md:p-0',
+        { 'selected border border-black md:border-none': toDo.priority === 1 },
+      ]"
     >
-      <p class="desktop-priority">Medium</p>
+      <p
+        class="hidden md:flex md:justify-center md:items-center md:leading-8 gap-2"
+      >
+        Medium
+      </p>
     </div>
     <div
       @click.stop="selectPriority(toDo, 2)"
-      :class="['high', 'priorities', { selected: toDo.priority === 2 }]"
+      :class="[
+        'bg-orange-600',
+        'h-3 w-3 rounded-full cursor-pointer md:!bg-white md:h-8 md:w-full md:rounded-full md:text-xs md:p-0',
+        { 'selected border border-black md:border-none': toDo.priority === 2 },
+      ]"
     >
-      <p class="desktop-priority">High</p>
+      <p
+        class="hidden md:flex md:justify-center md:items-center md:leading-8 gap-2"
+      >
+        High
+      </p>
     </div>
   </div>
 </template>
@@ -41,9 +80,19 @@
 <script setup lang="ts">
 import type { Todotype } from "../Types/toDo";
 import arrowDown from "../components/arrowDown.vue";
-defineProps<{ toDo: Todotype }>();
+import { computed } from "vue";
+const props = defineProps<{ toDo: Todotype }>();
 
-const priority = { 0: 'low', 1: 'medium', 2: 'high' };
+const priority = { 0: "low", 1: "medium", 2: "high" };
+
+const colorMaps: Record<number, string> = {
+  0: "bg-teal-400",
+  1: "bg-amber-400",
+  2: "bg-orange-600",
+};
+const getPriorityColor = computed(
+  () => colorMaps[props.toDo.priority as keyof typeof colorMaps]
+);
 
 function handlePriorityChange(index: keyof typeof priority) {
   return priority[index];
@@ -60,103 +109,3 @@ function changePriority(toDo: Todotype) {
   }
 }
 </script>
-
-<style scoped>
-.todo-priority {
-  display: none;
-}
-.desktop-priority {
-  display: none;
-}
-.selected {
-  border: 1px solid black;
-}
-.dropdown {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  top: 9px;
-  right: 20px;
-}
-.priorities {
-  height: 10px;
-  width: 10px;
-  border-radius: 50%;
-}
-.todo-priority-container {
-  width: 10px;
-  height: 10px;
-
-  border-radius: 50%;
-}
-.high {
-  background-color: #ff481f;
-}
-.medium {
-  background-color: #ffab00;
-}
-.low {
-  background-color: #38cbcb;
-}
-@media (min-width: 768px) {
-  .todo-priority-container {
-    position: absolute;
-    top: 23px;
-    right: 20px;
-    width: 125px;
-    height: 33px;
-    border-radius: 500px;
-    cursor: pointer;
-    color: #ffffff;
-  }
-  .desktop-priority {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 33px;
-    gap: 8px;
-  }
-  .dropdown-toggle {
-    position: absolute;
-    justify-content: space-between;
-    top: 68px;
-    display: flex !important;
-    flex-direction: column;
-    width: 125px;
-    height: 103px;
-    background-color: #ffffff;
-    border: 2px solid black;
-    border-radius: 16px;
-  }
-  .dropdown {
-    display: none;
-    gap: 0;
-  }
-  .todo-priority {
-    display: block;
-  }
-  .priorities {
-    background-color: #ffffff;
-    width: 100%;
-    height: 33px;
-    border-radius: 16px;
-    font-size: 15px;
-    line-height: 15px;
-    padding: 0;
-    cursor: pointer;
-  }
-  .selected {
-    border: none;
-  }
-  .dropdown-active {
-    border: 2px solid black;
-    background-color: #ffffff;
-    color: black;
-  }
-  .arrow-down {
-    width: 20px;
-    height: 20px;
-  }
-}
-</style>

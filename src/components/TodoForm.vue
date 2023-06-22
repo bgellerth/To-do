@@ -1,6 +1,9 @@
 <template>
-  <div class="wraper">
-    <div v-if="popup" class="popup">
+  <div class="w-full h-full max-w-xs md:max-w-2xl">
+    <div
+      v-if="popup"
+      class="z-50 absolute flex justify-center items-center inset-0 w-full h-full"
+    >
       <PopUp
         @removeTodo="removeTodo"
         @togglePopup="togglePopup"
@@ -11,7 +14,7 @@
       <Header @todoAdded="addTodo" />
       <ClearAll @clearAll="clearAll" />
 
-      <div class="list">
+      <div class="flex flex-col-reverse items-center gap-8 md:gap-12">
         <SingleToDo
           :handleSearch="handleSearch"
           :todos="searchTodos"
@@ -24,22 +27,24 @@
           :checkedTodos="checkedTodos"
         />
         <Search v-model="handleSearch" v-if="todos.length" />
-        <div class="no-input" v-if="!todos.length">
-          <img class="workflow-img" :src="Workflow" />
-          <p class="no-todos-text">You have no todos yet</p>
+        <div class="flex flex-col items-center" v-if="!todos.length">
+          <img class="w-48 h-56 md:w-72 md:h-80" :src="Workflow" />
+          <p class="text-xl md:text-3xl text-gray-500">You have no todos yet</p>
         </div>
       </div>
     </div>
-    <TodoChecked
-      v-if="checkedTodos.length > 0"
-      :todos="todos"
-      :checkedTodos="checkedTodos"
-      @notCheckedTodos="notCheckedTodos"
-      @toggleEdit="toggleEdit"
-      @saveTodo="saveTodo"
-      @deleteCheckedTodos="deleteCheckedTodos"
-      @editChecked="editChecked"
-    />
+    <div class="w-full flex items-center flex-col">
+      <TodoChecked
+        v-if="checkedTodos.length > 0"
+        :todos="todos"
+        :checkedTodos="checkedTodos"
+        @notCheckedTodos="notCheckedTodos"
+        @toggleEdit="toggleEdit"
+        @saveTodo="saveTodo"
+        @deleteCheckedTodos="deleteCheckedTodos"
+        @editChecked="editChecked"
+      />
+    </div>
   </div>
 </template>
 
@@ -57,11 +62,11 @@ import Search from "../components/Search.vue";
 defineProps<{ index: number }>();
 
 const todos = ref<Todotype[]>([]);
-const newTodo = ref('');
+const newTodo = ref("");
 const popup = ref(false);
 const selectedTaskIndex = ref();
 const checkedTodos = ref<Todotype[]>([]);
-const handleSearch = ref('');
+const handleSearch = ref("");
 
 function setCheckedTodos(toDo: Todotype) {
   const index = todos.value.findIndex((item) => item === toDo);
@@ -159,186 +164,3 @@ function editChecked(checkedTodo: Todotype) {
   checkedTodo.isEditing = !checkedTodo.isEditing;
 }
 </script>
-
-<style scoped>
-*,
-*::after,
-*::before {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: "Neue Hass Grotesk Display Pro";
-}
-.no-input {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.workflow-img {
-  width: 192px;
-  height: 221px;
-}
-.text-priority {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  flex-grow: 1;
-}
-
-.content-container {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-.status {
-  margin-right: 18px;
-}
-.listed-items {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  position: relative;
-  min-height: 82px;
-  width: 280px;
-  border: 2px solid #000000;
-  border-radius: 16px;
-}
-
-.content {
-  position: relative;
-  flex-direction: row-reverse;
-  height: 100%;
-  width: 100%;
-}
-.todo-text {
-  border: 0;
-}
-
-.text-title {
-  display: flex;
-  flex-direction: column;
-  width: 95%;
-}
-
-.title {
-  font-family: "SF Pro Text";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 21px;
-  width: 70%;
-  border: 0;
-}
-
-.delete-button {
-  font-size: 14px;
-  font-weight: 600px;
-  line-height: 17px;
-  width: 69px;
-  height: 27px;
-  border-radius: 8px;
-  border: 0;
-  outline: 0;
-  background-color: #e5e5e5;
-  padding: 5px 15px;
-}
-
-.delete-save-btn {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-  margin-top: 38px;
-}
-
-.buttons {
-  width: 60px;
-  height: 27px;
-}
-
-.no-todos-text {
-  font-size: 22px;
-  line-height: 26px;
-}
-
-.workflow-img {
-  width: 190px;
-  height: 220px;
-}
-
-.todo-list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.list {
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  gap: 30px;
-}
-.popup {
-  z-index: 99;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-}
-.wraper {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-@media screen and (min-width: 768px) {
-  .listed-items {
-    width: 610px;
-    height: 100%;
-    min-height: 163px;
-    justify-content: flex-start;
-  }
-
-  .status {
-    position: absolute;
-    margin-right: 0;
-    bottom: 20px;
-    right: 22px;
-  }
-  .delete-button {
-    width: 120px;
-    height: 52px;
-    font-size: 18px;
-    line-height: 22px;
-    border-radius: 16px;
-  }
-  .todo-title {
-    font-size: 42px;
-    line-height: 50px;
-    color: #757575;
-    width: 80%;
-  }
-  .todo-text {
-    font-size: 28px;
-    line-height: 34px;
-    color: #757575;
-    width: 100%;
-  }
-  .text-title {
-    width: 80%;
-  }
-  .delete-save-btn {
-    margin-top: 30px;
-  }
-  .workflow-img {
-    width: 273px;
-    height: 315px;
-  }
-}
-</style>

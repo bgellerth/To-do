@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities{
+    .width{
+        width: 600px;
+    }
+    .min-h-82{
+        min-height: 82px;
+    }
+
+    .min-h-163{
+        min-height: 163px;
+    }
+.dropdown-toggle{
+    width: 125px;
+    height: 103px;
+
+}
+}
