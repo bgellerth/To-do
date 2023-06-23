@@ -35,7 +35,7 @@
     </div>
     <div class="w-full flex items-center flex-col">
       <TodoChecked
-        v-if="checkedTodos.length > 0"
+        v-if="checkedTodos.length"
         :todos="todos"
         :checkedTodos="checkedTodos"
         @notCheckedTodos="notCheckedTodos"

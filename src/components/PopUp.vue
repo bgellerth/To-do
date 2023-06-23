@@ -7,16 +7,10 @@
     >
       <p>You can cancel authorization at any time.</p>
       <div class="flex flex-row gap-12 mt-4">
-        <button
-          class="bg-red-700 text-white text-sm font-semibold w-16 h-7 rounded-lg border-0 outline-0"
-          @click="removeTodo"
-        >
+        <button class="bg-red-700 popup-buttons" @click="removeTodo">
           Delete
         </button>
-        <button
-          class="bg-green-400 text-white text-sm font-semibold w-16 h-7 rounded-lg border-0 outline-0"
-          @click="togglePopup"
-        >
+        <button class="bg-green-400 popup-buttons" @click="togglePopup">
           Cancel
         </button>
       </div>

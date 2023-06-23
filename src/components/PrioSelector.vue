@@ -36,43 +36,31 @@
       @click.stop="selectPriority(toDo, 0)"
       :class="[
         'bg-teal-400',
-        'h-3 w-3 rounded-full cursor-pointer md:!bg-white md:h-8 md:w-full md:rounded-full md:text-xs md:p-0',
+        'priority-options',
         { 'selected border border-black md:border-none': toDo.priority === 0 },
       ]"
     >
-      <p
-        class="desktop-priority hidden md:flex md:justify-center md:items-center md:leading-8 gap-2"
-      >
-        Low
-      </p>
+      <p class="desktop-priority">Low</p>
     </div>
     <div
       @click.stop="selectPriority(toDo, 1)"
       :class="[
         'bg-amber-500',
-        'h-3 w-3 rounded-full cursor-pointer md:!bg-white md:h-8 md:w-full md:rounded-full md:text-xs md:p-0',
+        'priority-options',
         { 'selected border border-black md:border-none': toDo.priority === 1 },
       ]"
     >
-      <p
-        class="hidden md:flex md:justify-center md:items-center md:leading-8 gap-2"
-      >
-        Medium
-      </p>
+      <p class="desktop-priority">Medium</p>
     </div>
     <div
       @click.stop="selectPriority(toDo, 2)"
       :class="[
         'bg-orange-600',
-        'h-3 w-3 rounded-full cursor-pointer md:!bg-white md:h-8 md:w-full md:rounded-full md:text-xs md:p-0',
+        'priority-options',
         { 'selected border border-black md:border-none': toDo.priority === 2 },
       ]"
     >
-      <p
-        class="hidden md:flex md:justify-center md:items-center md:leading-8 gap-2"
-      >
-        High
-      </p>
+      <p class="desktop-priority">High</p>
     </div>
   </div>
 </template>
