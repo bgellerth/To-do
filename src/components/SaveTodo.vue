@@ -1,9 +1,14 @@
 <template>
-  <button class="save-button" @click.stop="saveTodo">Save</button>
+  <button
+    class="w-16 h-7 b-0 outline-0 bg-emerald-400 rounded-lg text-white text-sm font-semibold md:w-32 md:h-12 md:text-lg md:rounded-2xl"
+    @click.stop="saveTodo"
+  >
+    Save
+  </button>
 </template>
 
 <script setup lang="ts">
-import type { Todotype } from "../Types/toDo";
+import type { Todotype } from '../Types/toDo';
 
 const props = defineProps<{
   toDo: Todotype;
@@ -17,29 +22,3 @@ function saveTodo() {
   emit('todoSaved', props.toDo);
 }
 </script>
-
-<style scoped>
-.save-button {
-    width: 60px;
-    height: 27px;
-    border: 0;
-    outline: 0;
-    background-color: #38cb89;
-    border-radius: 8px;
-    color: white;
-    font-size: 14px;
-    line-height: 17px;
-    
-  }
-
-@media (min-width: 768px) {
-    .save-button{
-      width: 120px;
-      height: 52px;
-      font-size: 18px;
-      line-height: 22px;
-      border-radius: 16px;
-    }
-
-}
-</style>

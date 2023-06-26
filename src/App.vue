@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 import ToDoList from "./ToDoList/ToDoList.vue";
+import "./assets/main.css";
 </script>
 <style scoped>
 .app {

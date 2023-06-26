@@ -1,13 +1,18 @@
 <template>
-  <div v-if="!toDo.isEditing" class="status-container">
+  <div v-if="!toDo.isEditing" class="flex content-center items-center">
     <div
       v-if="!toDo.status"
-      class="un-checked"
+      class="w-6 h-6 border-solid border-black border-4 md:w-10 md:h-10 md:border-6 rounded-full"
       @click.stop="markTodoStatus(toDo)"
     ></div>
-    <div v-else class="checked-todo" @click.stop="markTodoStatus(toDo)">
-      <div class="circle"></div>
-      <img class="vector" src="../assets/Vector.svg" />
+    <div v-else class="relative" @click.stop="markTodoStatus(toDo)">
+      <div
+        class="w-6 h-6 border-solid border-green-300 border-4 md:w-10 md:h-10 md:border-6 rounded-full"
+      ></div>
+      <img
+        class="absolute -top-1 w-7 h-6 md:-top-1 md:left-0 md:w-11 md:h-9 md:absolute"
+        src="../assets/Vector.svg"
+      />
     </div>
   </div>
 </template>
@@ -31,48 +36,3 @@ function markTodoStatus(toDo: Todotype) {
   }
 }
 </script>
-<style scoped>
-.status-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.un-checked ,.circle{
-  width: 24px;
-  height: 24px;
-  border: 4px solid black;
-  border-radius: 50%;
-}
-.circle {
-  border: 4px solid #4fda9b!important;
-}
-.vector {
-  position: absolute;
-  top: -8px;
-  left: -1px;
-  width: 30px;
-  height: 30px;
-}
-.checked-todo {
-  position: relative;
-}
-@media (min-width: 768px) {
-  .un-checked {
-    width: 40px;
-    height: 40px;
-    border: 6px solid black;
-  }
-  .circle {
-    width: 40px;
-    height: 40px;
-
-    border: 6px solid #4fda9b;
-  }
-  .vector {
-    top: -5px;
-    left: 0px;
-    width: 44px;
-    height: 35px;
-  }
-}
-</style>

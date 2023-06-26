@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .width {
+    width: 600px;
+  }
+  .min-h-82 {
+    min-height: 82px;
+  }
+  .min-h-163 {
+    min-height: 163px;
+  }
+  .dropdown-toggle {
+    width: 125px;
+    height: 103px;
+  }
+}
+@layer components {
+  .priority-options {
+    @apply h-3 w-3 rounded-full cursor-pointer md:!bg-white md:h-8 md:w-full md:rounded-full md:text-xs md:p-0;
+  }
+
+  .popup-buttons {
+    @apply text-white text-sm font-semibold w-16 h-7 rounded-lg border-0 outline-0;
+  }
+
+  .desktop-priority {
+    @apply hidden md:flex md:justify-center md:items-center md:leading-8 gap-2;
+  }
+}

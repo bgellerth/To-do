@@ -8,6 +8,6 @@ const emit = defineEmits<{
 }>();
 
 function clearAll() {
-  emit("clearAll");
+  emit('clearAll');
 }
 </script>
