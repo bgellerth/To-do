@@ -110,13 +110,3 @@ function deleteTodo(toDo: Todotype) {
 }
 </script>
 
-<style scoped>
-*,
-*::after,
-*::before {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: 'Neue Hass Grotesk Display Pro';
-}
-</style>
