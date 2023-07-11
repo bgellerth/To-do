@@ -28,18 +28,21 @@
             <p v-else class="todo-title md:text-4xl w-full">
               {{ toDo.title }}
             </p>
+            <p class=" text-xs text-gray-400 md:text-black ">
+              {{ toDo.date }}
+            </p>
           </div>
           <div>
             <input
-              v-if="toDo.isEditing"
-              class="todo-text border-0 md:text-3xl text-gray-500 md:w-full outline-none"
-              type="text"
-              placeholder="New to do"
-              @click.stop
-              v-model="toDo.text"
+            v-if="toDo.isEditing"
+            class="todo-text border-0 md:text-3xl text-gray-500 md:w-full outline-none"
+            type="text"
+            placeholder="New to do"
+            @click.stop
+            v-model="toDo.text"
             />
             <p
-              v-else
+            v-else
               class="todo-text border-0 md:text-3xl text-gray-500 md:w-full outline-none"
             >
               {{ toDo.text }}
@@ -48,6 +51,7 @@
         </div>
         <PrioSelector :toDo="toDo" class="priority" />
       </div>
+      <p class="text-gray-400 text-sm"></p>
     </div>
     <div
       class="delete-save-btn flex gap-3 w-full mt-9 md:mt-9"
@@ -109,4 +113,3 @@ function deleteTodo(toDo: Todotype) {
   }
 }
 </script>
-

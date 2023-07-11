@@ -26,7 +26,7 @@
           :index="selectedTaskIndex"
           :checkedTodos="checkedTodos"
         />
-        <Sorting />
+        <Sorting :todos="todos" />
         <Search v-model="handleSearch" v-if="todos.length" />
         <div class="flex flex-col items-center" v-if="!todos.length">
           <img class="w-48 h-56 md:w-72 md:h-80" :src="Workflow" />
@@ -62,8 +62,11 @@ import { Todotype } from '../Types/toDo';
 import PopUp from './PopUp.vue';
 import TodoChecked from './TodoChecked.vue';
 import Search from '../components/Search.vue';
+import moment from 'moment'
 
-defineProps<{ index: number }>();
+defineProps<{ index: number  }>();
+
+
 
 const todos = ref<Todotype[]>([]);
 const newTodo = ref('');
@@ -71,6 +74,7 @@ const popup = ref(false);
 const selectedTaskIndex = ref();
 const checkedTodos = ref<Todotype[]>([]);
 const handleSearch = ref('');
+
 
 function setCheckedTodos(toDo: Todotype) {
   const index = todos.value.findIndex((item) => item === toDo);
@@ -109,6 +113,7 @@ function toggleEdit(toDo: Todotype) {
   toDo.isEditing = !toDo.isEditing;
 }
 function addTodo() {
+  const date=moment().format('DD.MM.YYYY')
   todos.value.push({
     text: 'Add your Todo',
     isEditing: false,
@@ -116,6 +121,9 @@ function addTodo() {
     priority: 0,
     title: 'Title',
     status: false,
+    date: date,
+    sort:'',
+    
   });
   newTodo.value = '';
 }
