@@ -14,7 +14,9 @@
       <Header @todoAdded="addTodo" />
 
       <ClearAll @clearAll="clearAll" />
-      <div class="flex flex-col-reverse items-center gap-8 md:gap-12">
+      <div class="flex flex-col items-center gap-8 md:gap-12">
+        <Search v-model="handleSearch" v-if="todos.length" />
+        <Sorting :todos="todos" />
         <SingleToDo
           :handleSearch="handleSearch"
           :todos="searchTodos"
@@ -26,8 +28,6 @@
           :index="selectedTaskIndex"
           :checkedTodos="checkedTodos"
         />
-        <Sorting />
-        <Search v-model="handleSearch" v-if="todos.length" />
         <div class="flex flex-col items-center" v-if="!todos.length">
           <img class="w-48 h-56 md:w-72 md:h-80" :src="Workflow" />
           <p class="text-xl md:text-3xl text-gray-500 font-semibold">
@@ -62,6 +62,7 @@ import { Todotype } from '../Types/toDo';
 import PopUp from './PopUp.vue';
 import TodoChecked from './TodoChecked.vue';
 import Search from '../components/Search.vue';
+import moment from 'moment';
 
 defineProps<{ index: number }>();
 
@@ -109,13 +110,16 @@ function toggleEdit(toDo: Todotype) {
   toDo.isEditing = !toDo.isEditing;
 }
 function addTodo() {
-  todos.value.push({
+  const date = moment().format('DD.MM.YYYY');
+  todos.value.unshift({
     text: 'Add your Todo',
     isEditing: false,
     priorityChange: false,
     priority: 0,
     title: 'Title',
     status: false,
+    date: date,
+    sort: '',
   });
   newTodo.value = '';
 }
