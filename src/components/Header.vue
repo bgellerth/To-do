@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-col my-8 mx-auto md:max-width w-full">
+  <div class="flex-col my-8 mx-auto w-full">
     <div class="flex justify-between items-center">
       <h1 class="m-0 font-semibold text-2xl md:text-7xl">To do list</h1>
       <button
