@@ -2,42 +2,42 @@
   <div class="flex w-full justify-between flex-wrap gap-5">
     <div class="flex gap-3">
       <button
-        @click="handleClick('title')"
         :class="{
           'sort-buttons': true,
           ascendant: isSortedByTitle && sortDirection === 'asc',
           descendant: isSortedByTitle && sortDirection !== 'asc',
         }"
+        @click="handleClick('title')"
       >
         Title
       </button>
       <button
-        @click="handleClick('text')"
         :class="{
           'sort-buttons': true,
           ascendant: isSortedByText && sortDirection === 'asc',
           descendant: isSortedByText && sortDirection !== 'asc',
         }"
+        @click="handleClick('text')"
       >
         Description
       </button>
       <button
-        @click="handleClick('priority')"
         :class="{
           'sort-buttons': true,
           ascendant: isSortedByPriority && sortDirection === 'asc',
           descendant: isSortedByPriority && sortDirection !== 'asc',
         }"
+        @click="handleClick('priority')"
       >
         Priority
       </button>
       <button
-        @click="handleClick('date')"
         :class="{
           'sort-buttons': true,
           ascendant: isSortedByDate && sortDirection === 'asc',
           descendant: isSortedByDate && sortDirection !== 'asc',
         }"
+        @click="handleClick('date')"
       >
         Date
       </button>
@@ -45,14 +45,14 @@
 
     <div class="flex gap-2">
       <button
+        class="ascend-descend-btn bg-emerald-400 hover:bg-emerald-500"
         @click="handleSortDirectionChange('asc')"
-        class="ascend-descend-btn bg-emerald-400"
       >
         <img src="../assets/Ascending.svg" />
       </button>
       <button
+        class="ascend-descend-btn bg-black hover:bg-slate-900"
         @click="handleSortDirectionChange('desc')"
-        class="ascend-descend-btn bg-black"
       >
         <img src="../assets/Descending.svg" />
       </button>
@@ -62,16 +62,21 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Todotype } from '../Types/toDo';
 import { SortDirection } from '../Types/SortDirection';
+import { Todotype } from '../Types/toDo';
 
 const sortBy = ref('');
 const isSortedByTitle = ref(false);
 const isSortedByText = ref(false);
 const isSortedByPriority = ref(false);
 const isSortedByDate = ref(false);
-const props = defineProps<{ todos: Todotype[] }>();
 const sortDirection = ref<SortDirection>('asc');
+
+interface props {
+  checkedTodos: Todotype[];
+  todos: Todotype[];
+}
+const props = defineProps<props>();
 
 function handleClick(key: string) {
   sortBy.value = key;
@@ -94,6 +99,12 @@ function sortTodos(sortBy: string, sortDirection: SortDirection) {
       }
       return a.priority - b.priority;
     });
+    props.checkedTodos.sort((a: Todotype, b: Todotype) => {
+      if (sortDirection === 'desc') {
+        return b.priority - a.priority;
+      }
+      return a.priority - b.priority;
+    });
     return;
   }
 
@@ -103,8 +114,13 @@ function sortTodos(sortBy: string, sortDirection: SortDirection) {
     }
     return (a as any)[sortBy].localeCompare((b as any)[sortBy]);
   });
+  props.checkedTodos.sort((a: Todotype, b: Todotype) => {
+    if (sortDirection === 'desc') {
+      return (b as any)[sortBy].localeCompare((a as any)[sortBy]);
+    }
+    return (a as any)[sortBy].localeCompare((b as any)[sortBy]);
+  });
 }
-
 
 function handleSortDirectionChange(direction: SortDirection) {
   sortDirection.value = direction;

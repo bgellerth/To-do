@@ -5,8 +5,8 @@
 </template>
 
 <script setup lang="ts">
-import ToDoList from "./ToDoList/ToDoList.vue";
-import "./assets/main.css";
+import ToDoList from './ToDoList.vue';
+import '../assets/main.css';
 </script>
 <style scoped>
 .app {

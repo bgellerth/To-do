@@ -12,30 +12,6 @@
   font-family: 'Neue Haas Grotesk Display Pro';
 }
 
-@layer utilities {
-  .width {
-    width: 600px;
-  }
-  .min-h-82 {
-    min-height: 82px;
-  }
-  .min-h-163 {
-    min-height: 163px;
-  }
-  .dropdown-toggle {
-    width: 125px;
-    height: 103px;
-  }
-  .search-bar {
-    width: 287px;
-    height: 47px;
-  }
-  .desktop-search-bar {
-    width: 600px;
-    height: 68px;
-  }
-
-}
 @layer components {
   .priority-options {
     @apply h-3 w-3 rounded-full cursor-pointer md:!bg-white md:h-8 md:w-full md:rounded-full md:text-xs md:p-0;

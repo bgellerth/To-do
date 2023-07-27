@@ -15,5 +15,9 @@
   </svg>
 </template>
 <script setup lang="ts">
-defineProps<{ isPriorityChanged: boolean }>();
+interface props {
+  isPriorityChanged: boolean;
+}
+
+const props = defineProps<props>();
 </script>

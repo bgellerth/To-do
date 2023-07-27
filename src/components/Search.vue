@@ -21,19 +21,27 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import SearchIcon from '../assets/SearchIcon.svg';
-
-const props = defineProps<{
+import { debounce } from 'lodash';
+interface props {
   modelValue: string;
-}>();
+}
+
+const props = defineProps<props>();
+
 const emit = defineEmits<{
   (e: 'update:modelValue', newValue: string): void;
 }>();
+
+const debouncedUpdate = debounce((inputValue: string) => {
+  emit('update:modelValue', inputValue);
+}, 600);
+
 const searchInput = computed({
   get() {
     return props.modelValue;
   },
   set(inputValue) {
-    emit('update:modelValue', inputValue);
+    debouncedUpdate(inputValue);
   },
 });
 </script>

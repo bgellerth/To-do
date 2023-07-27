@@ -11,15 +11,24 @@
   "dependencies": {
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
+    "n": "^9.1.0",
+    "node": "^18.14.0",
+    "stable": "^0.1.8",
+    "uuid": "^9.0.0",
     "vue": "^3.2.47",
-    "vue-moment": "^4.1.0"
+    "vue-moment": "^4.1.0",
+    "vue-uuid": "^3.0.0",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.195",
+    "@types/uuid": "^9.0.2",
+    "@types/uuidjs": "^3.6.0",
     "@vitejs/plugin-vue": "^4.1.0",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.24",
     "tailwindcss": "^3.3.2",
-    "typescript": "^5.0.2",
+    "typescript": "^5.1.6",
     "vite": "^4.3.2",
     "vue-tsc": "^1.4.2"
   }

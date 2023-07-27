@@ -2,10 +2,11 @@ export type Todotype = {
   text: string;
   isEditing: boolean;
   isPriorityChanged: boolean;
-  priority: Tuple;
-  title: String;
+  priority: number;
+  title: string;
   isChecked: boolean;
   date: string;
-  sort: any;
-  index: any;
+  sort: string;
+  index: number;
+  id: string;
 };
