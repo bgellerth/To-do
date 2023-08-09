@@ -1,29 +1,38 @@
 <template>
-  <h1 class=" text-lg py-3 font-bold md:text-xl">Done To-Dos:</h1>
+  <h1 class="text-lg py-3 font-bold md:text-xl">Done To-Dos:</h1>
   <div v-for="(checkedTodo, index) in checkedTodos" :key="index">
     <div>
       <SingleToDo
-        @editChecked="editChecked"
         :todos="[checkedTodo]"
+        :checkedTodos="checkedTodos"
+        :singleEditTodo="singleEditTodo"
+        @editChecked="editChecked"
         @notCheckedTodos="notCheckedTodos"
         @saveTodo="saveTodo"
         @deleteCheckedTodos="deleteCheckedTodos"
-        :checkedTodos="checkedTodos"
+        @setCheckedTodos="setCheckedTodos"
       />
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { Todotype } from '../Types/toDo';
 import SingleToDo from './SingleToDo.vue';
+import { Todotype } from '../Types/toDo';
 
-defineProps<{ checkedTodos: Todotype[]; todos: Todotype[] }>();
+interface props {
+  checkedTodos: Todotype[];
+  todos: Todotype[];
+  singleEditTodo: boolean;
+}
+
+const props = defineProps<props>();
 
 const emit = defineEmits<{
   (e: 'notCheckedTodos', toDo: Todotype): void;
   (e: 'editChecked', checkedTodo: Todotype): void;
   (e: 'saveTodo', toDo: Todotype): void;
   (e: 'deleteCheckedTodos', index: number): void;
+  (e: 'setCheckedTodos', toDo: Todotype): void;
 }>();
 
 function notCheckedTodos(toDo: Todotype) {
@@ -39,5 +48,8 @@ function deleteCheckedTodos(index: number) {
 }
 function editChecked(checkedTodo: Todotype) {
   emit('editChecked', checkedTodo);
+}
+function setCheckedTodos(toDo: Todotype) {
+  emit('setCheckedTodos', toDo);
 }
 </script>

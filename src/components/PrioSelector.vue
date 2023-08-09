@@ -16,7 +16,7 @@
       :class="toDo.isPriorityChanged ? 'text-black' : 'text-white'"
     >
       {{ handlePriorityChange(toDo.priority) }}
-      <arrowDown
+      <ArrowDown
         v-if="toDo.isEditing"
         :isPriorityChanged="toDo.isPriorityChanged"
         class="arrow-down md:w-5 md:h-5"
@@ -28,38 +28,38 @@
     :class="[
       'absolute top-4 gap-2 right-5 items-center flex flex-row md:hidden md:gap-0',
       {
-        'md:dropdown-toggle md:justify-between md:absolute md:top-16 md:flex-col md:bg-white md:border-2 md:border-black rounded-2xl md:!flex':
+        'md:h-[103px] md:w-[125px] md:justify-between md:absolute md:top-16 md:flex-col md:bg-white md:border-2 md:border-black rounded-2xl md:!flex':
           toDo.isPriorityChanged,
       },
     ]"
   >
     <div
-      @click.stop="selectPriority(toDo, 0)"
-      :class="[
-        'bg-teal-400',
-        'priority-options',
-        { 'selected border border-black md:border-none': toDo.priority === 0 },
-      ]"
+    :class="[
+      'bg-teal-400',
+      'priority-options',
+      { 'selected border border-black md:border-none': toDo.priority === 0 },
+    ]"
+    @click.stop="selectPriority(toDo, 0)"
     >
       <p class="desktop-priority">Low</p>
     </div>
     <div
-      @click.stop="selectPriority(toDo, 1)"
       :class="[
         'bg-amber-500',
         'priority-options',
         { 'selected border border-black md:border-none': toDo.priority === 1 },
       ]"
+      @click.stop="selectPriority(toDo, 1)"
     >
       <p class="desktop-priority">Medium</p>
     </div>
     <div
-      @click.stop="selectPriority(toDo, 2)"
       :class="[
         'bg-orange-600',
         'priority-options',
         { 'selected border border-black md:border-none': toDo.priority === 2 },
       ]"
+      @click.stop="selectPriority(toDo, 2)"
     >
       <p class="desktop-priority">High</p>
     </div>
@@ -67,10 +67,15 @@
 </template>
 
 <script setup lang="ts">
-import type { Todotype } from '../Types/toDo';
-import arrowDown from '../components/arrowDown.vue';
 import { computed } from 'vue';
-const props = defineProps<{ toDo: Todotype }>();
+import ArrowDown from '../components/ArrowDown.vue';
+import type { Todotype } from '../Types/toDo';
+
+interface props {
+  toDo: Todotype;
+}
+
+const props = defineProps<props>();
 
 const priority = { 0: 'low', 1: 'medium', 2: 'high' };
 

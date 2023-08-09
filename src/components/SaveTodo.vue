@@ -1,6 +1,6 @@
 <template>
   <button
-    class="w-16 h-7 b-0 outline-0 bg-emerald-400 rounded-lg text-white text-sm font-semibold md:w-32 md:h-12 md:text-lg md:rounded-2xl"
+    class="w-16 h-7 b-0 outline-0 bg-emerald-400 hover:bg-emerald-600 rounded-lg text-white text-sm font-semibold md:w-32 md:h-12 md:text-lg md:rounded-2xl"
     @click.stop="saveTodo"
   >
     Save
@@ -10,9 +10,11 @@
 <script setup lang="ts">
 import type { Todotype } from '../Types/toDo';
 
-const props = defineProps<{
+interface props {
   toDo: Todotype;
-}>();
+}
+
+const props = defineProps<props>();
 
 const emit = defineEmits<{
   (e: 'todoSaved', toDo: Todotype): void;

@@ -1,9 +1,9 @@
 <template>
   <div class="ToDoList w-screen h-screen flex justify-center">
-    <TodoForm :index="0" />
+    <TodoForm />
   </div>
 </template>
 
 <script setup lang="ts">
-import TodoForm from '../components/TodoForm.vue';
+import TodoForm from './TodoForm.vue';
 </script>
