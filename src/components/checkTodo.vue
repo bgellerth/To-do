@@ -1,7 +1,7 @@
 <template>
   <div v-if="!toDo.isEditing" class="flex content-center items-center">
     <div
-      v-if="!toDo.status"
+      v-if="!toDo.isChecked"
       class="w-6 h-6 border-solid border-black border-4 md:w-10 md:h-10 md:border-6 rounded-full"
       @click.stop="markTodoStatus(toDo)"
     ></div>
@@ -27,11 +27,11 @@ const emit = defineEmits<{
 }>();
 
 function markTodoStatus(toDo: Todotype) {
-  if (toDo.status) {
-    toDo.status = false;
+  if (toDo.isChecked) {
+    toDo.isChecked = false;
     emit('notCheckedTodos', toDo);
   } else {
-    toDo.status = true;
+    toDo.isChecked = true;
     emit('setCheckedTodos', toDo);
   }
 }

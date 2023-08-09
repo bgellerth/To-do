@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full max-w-xs md:max-w-2xl">
+  <div class="w-full h-full search-bar md:desktop-search-bar">
     <div
       v-if="popup"
       class="z-50 absolute flex justify-center items-center inset-0 w-full h-full"
@@ -12,24 +12,23 @@
     </div>
     <div class="todo-list">
       <Header @todoAdded="addTodo" />
-      <ClearAll @clearAll="clearAll" />
-
-      <div class="flex flex-col-reverse items-center gap-8 md:gap-12">
+      <div class="flex flex-col items-center gap-8 md:gap-12">
+        <Search v-model="handleSearch" v-if="todos.length" />
+        <Sorting :todos="todos" />
         <SingleToDo
-          :handleSearch="handleSearch"
           :todos="searchTodos"
           @toggleEdit="toggleEdit"
           @setCheckedTodos="setCheckedTodos"
           @saveTodo="saveTodo"
           @taskIndex="taskIndex"
           @notCheckedTodos="notCheckedTodos"
-          :index="selectedTaskIndex"
           :checkedTodos="checkedTodos"
         />
-        <Search v-model="handleSearch" v-if="todos.length" />
         <div class="flex flex-col items-center" v-if="!todos.length">
           <img class="w-48 h-56 md:w-72 md:h-80" :src="Workflow" />
-          <p class="text-xl md:text-3xl text-gray-500">You have no todos yet</p>
+          <p class="text-xl md:text-3xl text-gray-500 font-semibold">
+            You have no todos yet
+          </p>
         </div>
       </div>
     </div>
@@ -52,12 +51,13 @@
 import { ref, onMounted, watch, computed } from 'vue';
 import Workflow from '../assets/workflow.svg';
 import Header from './Header.vue';
-import ClearAll from '../components/ClearAll.vue';
 import SingleToDo from '../components/SingleToDo.vue';
+import Sorting from '../components/Sorting.vue';
 import { Todotype } from '../Types/toDo';
 import PopUp from './PopUp.vue';
 import TodoChecked from './TodoChecked.vue';
 import Search from '../components/Search.vue';
+import moment from 'moment';
 
 defineProps<{ index: number }>();
 
@@ -79,7 +79,7 @@ function notCheckedTodos(toDo: Todotype) {
   const index = checkedTodos.value.findIndex((item) => item === toDo);
   if (index !== -1) {
     const uncheckedTodo = checkedTodos.value.splice(index, 1)[0];
-    uncheckedTodo.status = false;
+    uncheckedTodo.isChecked = false;
 
     todos.value.push({ ...uncheckedTodo });
   }
@@ -105,20 +105,19 @@ function toggleEdit(toDo: Todotype) {
   toDo.isEditing = !toDo.isEditing;
 }
 function addTodo() {
-  todos.value.push({
+  const date = moment().format('DD.MM.YYYY');
+  todos.value.unshift({
     text: 'Add your Todo',
     isEditing: false,
-    priorityChange: false,
+    isPriorityChanged: false,
     priority: 0,
     title: 'Title',
-    status: false,
+    isChecked: false,
+    date: date,
+    sort: '',
+    index: '',
   });
   newTodo.value = '';
-}
-
-function clearAll() {
-  todos.value = [];
-  checkedTodos.value = [];
 }
 
 function removeTodo(index: number) {

@@ -1,5 +1,5 @@
 <template>
-  <h1>Done To dos</h1>
+  <h1 class=" text-lg py-3 font-bold md:text-xl">Done To-Dos:</h1>
   <div v-for="(checkedTodo, index) in checkedTodos" :key="index">
     <div>
       <SingleToDo
@@ -17,7 +17,7 @@
 import { Todotype } from '../Types/toDo';
 import SingleToDo from './SingleToDo.vue';
 
-const props = defineProps<{ checkedTodos: Todotype[]; todos: Todotype[] }>();
+defineProps<{ checkedTodos: Todotype[]; todos: Todotype[] }>();
 
 const emit = defineEmits<{
   (e: 'notCheckedTodos', toDo: Todotype): void;
