@@ -35,6 +35,8 @@ const emit = defineEmits<{
   (e: 'setCheckedTodos', toDo: Todotype): void;
 }>();
 
+
+
 function notCheckedTodos(toDo: Todotype) {
   emit('notCheckedTodos', toDo);
 }
