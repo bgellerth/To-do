@@ -1,19 +1,21 @@
 import express, { Express, Request, Response } from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-require("dotenv").config();
+import dotenv from "dotenv";
+import config from "./config"
 
+dotenv.config()
 // create out express app
 const app: Express = express();
-const port = 3000;
+const port = config.server.port
 
 // Handle CORS + middleware
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Methods",
     "GET,HEAD,OPTIONS,POST,PUT,DELETE"
-  ); // If using .fetch and not axios
+  );
   res.header(
     "Access-Control-Allow-Headers",
     "auth-token, Origin, X-Requested-With, Content-Type, Accept"
@@ -21,18 +23,24 @@ app.use(function (req, res, next) {
   next();
 });
 
-// database stuff
-const uri = process.env.MONGO_URI as string;
-console.log(uri);
-mongoose
-  .connect(uri)
-  .then(() => {
+const connectOptions: mongoose.ConnectOptions = {
+  dbName: 'todo_Benko_Gellert'
+};
+
+async function startServer() {
+  try {
+    const uri = config.mongoUri as string;
+    await mongoose.connect(uri, connectOptions);
     console.log("MongoDB connected");
-  })
-  .catch((err) => console.log(err));
 
-app.use(bodyParser.json());
+    app.use(bodyParser.json());
 
-app.listen(port, () => {
-  console.log(`[Server]: I am running at https://localhost:${port}`);
-});
+    app.listen(port, () => {
+      console.log(`[Server]: I am running at https://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+  }
+}
+
+startServer();
