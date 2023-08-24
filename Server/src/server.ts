@@ -1,13 +1,14 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import mongoose from "mongoose";
-import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import config from "./config"
+import config from "./config";
+import router from "./routes/index";
+import bodyParser from "body-parser";
 
-dotenv.config()
+dotenv.config();
 // create out express app
 const app: Express = express();
-const port = config.server.port
+const port = config.server.port;
 
 // Handle CORS + middleware
 app.use((req, res, next) => {
@@ -23,8 +24,18 @@ app.use((req, res, next) => {
   next();
 });
 
+//URLencode
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: false,
+  })
+);
+//Routers
+app.use("/", router);
+
 const connectOptions: mongoose.ConnectOptions = {
-  dbName: 'todo_Benko_Gellert'
+  dbName: "todo_Benko_Gellert",
 };
 
 async function startServer() {
@@ -33,7 +44,7 @@ async function startServer() {
     await mongoose.connect(uri, connectOptions);
     console.log("MongoDB connected");
 
-    app.use(bodyParser.json());
+    // app.use(bodyParser.json());
 
     app.listen(port, () => {
       console.log(`[Server]: I am running at https://localhost:${port}`);
