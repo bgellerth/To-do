@@ -1,11 +1,14 @@
 <template>
-  <div class="app">
-    <ToDoList />
+
+  <RouterView></RouterView>
+  
+  <div class="w-screen h-screen flex justify-center">
+    <TodoForm />
   </div>
 </template>
 
 <script setup lang="ts">
-import ToDoList from './ToDoList.vue';
+import TodoForm from './TodoForm.vue';
 import '../assets/main.css';
 </script>
 <style scoped>

@@ -1,0 +1,7 @@
+{
+    "restartable": "rs",
+    "ignore": [".git", "node_modules/**/node_modules", "lambda-functions"],
+    "verbose": true,
+    "exec": "node dist/server.js",
+    "watch": ["dist"]
+}

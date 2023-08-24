@@ -38,7 +38,7 @@
           </div>
         </div>
       </div>
-      <div class="w-full flex items-center flex-col">
+      <div class="w-full flex items-center flex-col gap-12">
         <TodoChecked
           v-if="checkedTodos.length"
           :todos="todos"
@@ -50,6 +50,7 @@
           @deleteCheckedTodos="deleteCheckedTodos"
           @editChecked="editChecked"
           @setCheckedTodos="setCheckedTodos"
+          @togglePopup="togglePopup"
         />
       </div>
     </div>
@@ -66,16 +67,10 @@ import Sorting from '../components/Sorting.vue';
 import PopUp from './PopUp.vue';
 import TodoChecked from './TodoChecked.vue';
 import Search from '../components/Search.vue';
-import moment from 'moment';
-
+import moment from 'moment'
 import { Todotype } from '../Types/toDo';
 import { v4 as uuidv4 } from 'uuid';
 
-interface props {
-  index: number;
-}
-
-const props = defineProps<props>();
 
 const singleEditTodo = ref<boolean>(false);
 const todos = ref<Todotype[]>([]);
@@ -100,6 +95,7 @@ function handleClickOutside() {
     });
   }
 }
+
 
 function setCheckedTodos(toDo: Todotype) {
   const index = todos.value.findIndex((item) => item === toDo);
@@ -126,6 +122,7 @@ const searchTodos = computed(() => {
       .includes(handleSearch.value.toLowerCase())
   );
 });
+
 
 function taskIndex(index: number) {
   isPopedUp.value = true;
@@ -197,6 +194,7 @@ watch(
 
 function deleteCheckedTodos(index: number) {
   checkedTodos.value.splice(index, 1);
+  
 }
 
 function editChecked(checkedTodo: Todotype) {
